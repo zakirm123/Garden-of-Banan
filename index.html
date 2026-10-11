@@ -1,9 +1,10 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Garden of Banan – Chapter 1</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <style>
 :root{--bg:#0a0a14;--fg:#fff;--ac:#ffd21f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
-html,body{height:100%;margin:0;overflow:hidden;background:var(--bg);color:var(--fg);font-family:system-ui,sans-serif}
+html,body{height:100%;margin:0;overflow:hidden;background:var(--bg);color:var(--fg);font-family:system-ui,sans-serif;touch-action:none;overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+body{position:fixed;width:100%}
 #g{position:absolute;inset:0;touch-action:none}
 .h{position:absolute;pointer-events:none;text-shadow:0 2px 4px #000;font-weight:600}
 #obj{top:calc(10px + env(safe-area-inset-top,0px));left:12px;max-width:60%;color:var(--ac)}
@@ -13,7 +14,7 @@ html,body{height:100%;margin:0;overflow:hidden;background:var(--bg);color:var(--
 #cr{left:50%;top:50%;width:6px;height:6px;margin:-3px;border-radius:50%;background:#fff8}
 #ov{position:absolute;inset:0;background:#000;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;font-size:22px;cursor:pointer;flex-direction:column;gap:16px;z-index:5;box-sizing:border-box;white-space:pre-line}
 #fl{position:absolute;inset:0;background:#f00;opacity:0;pointer-events:none;transition:opacity .3s}
-#nt{display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(86%,430px);max-height:80%;overflow:auto;background:#f4e6c4;color:#3a2a14;padding:20px;font:17px/1.4 Georgia,serif;white-space:pre-line;z-index:6;box-shadow:0 0 40px #000;cursor:pointer;box-sizing:border-box}
+#nt{display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(86%,430px);max-height:80%;overflow:auto;background:#f4e6c4;color:#3a2a14;padding:20px;font:17px/1.4 Georgia,serif;white-space:pre-line;z-index:6;box-shadow:0 0 40px #000;cursor:pointer;box-sizing:border-box;touch-action:pan-y}
 #tc{display:none}.tch #tc{display:block;position:absolute;inset:0;pointer-events:none;z-index:3}#tc>*{pointer-events:auto}
 #js{position:absolute;left:calc(18px + env(safe-area-inset-left,0px));bottom:calc(28px + env(safe-area-inset-bottom,0px));width:120px;height:120px;border-radius:50%;background:#ffffff22;border:2px solid #fff6;touch-action:none}
 #kn{position:absolute;left:40px;top:40px;width:40px;height:40px;border-radius:50%;background:#fffc;pointer-events:none}
@@ -27,6 +28,12 @@ html,body{height:100%;margin:0;overflow:hidden;background:var(--bg);color:var(--
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 window.onerror=(m,s,l)=>{const d=document.getElementById('ov');d.style.display='flex';d.textContent='Error: '+m+' (line '+l+')'};
+// stop phone zooming / scrolling / double-tap zoom
+['gesturestart','gesturechange','gestureend'].forEach(n=>document.addEventListener(n,e=>e.preventDefault()));
+document.addEventListener('touchmove',e=>{if(!(e.target.closest&&e.target.closest('#nt')))e.preventDefault()},{passive:false});
+let ltap=0;document.addEventListener('touchend',e=>{const n=Date.now();if(n-ltap<350)e.preventDefault();ltap=n},{passive:false});
+document.addEventListener('dblclick',e=>e.preventDefault());
+document.addEventListener('contextmenu',e=>e.preventDefault());
 const T=THREE,$=id=>document.getElementById(id),g=$('g');
 const sc=new T.Scene();sc.background=new T.Color(0x0a0a14);sc.fog=new T.Fog(0x0a0a14,6,36);
 const cam=new T.PerspectiveCamera(70,1,.1,100),R=new T.WebGLRenderer({antialias:true});g.appendChild(R.domElement);
@@ -81,7 +88,7 @@ let st=0;const say=(t,ms=3500,who)=>{$('sub').textContent=who?who+': '+t:t;if(wh
 const NOTE='A note from Dad\n\nDear Tommy,\n\nIf you are reading this, you found my secret room. I am so proud of you.\n\nThis is not a normal preschool. I am sorry I lied to you.\n\nDo not trust the Banan family, and never let Eggy Bird catch you. The elevator at the end goes down to where I am. Keep going, buddy.\n\nP.S. Always carry a Snickers bar. You get grumpy when you are hungry.\n\nLove, Dad\n\n(tap or press E to close)';
 function note(){S.note=1;$('nt').textContent=NOTE;$('nt').style.display='block';voice(NOTE.replace(/\(tap.*\)/,'').replace(/\n+/g,' '),'Dad')}
 function closeNote(){S.note=0;$('nt').style.display='none';try{speechSynthesis.cancel()}catch(e){}}
-$('nt').onclick=closeNote;
+$('nt').onpointerdown=closeNote;
 // DECOR
 const MC=['#e23030','#ffd21f','#3ecf3e','#8b5a2b','#ffffff'];
 function mural(x,y,z,ry,w,h,bg,cap){const c=document.createElement('canvas');c.width=1024;const H=c.height=Math.round(1024*h/w),q=c.getContext('2d');q.fillStyle=bg;q.fillRect(0,0,1024,H);q.fillStyle='#ffffff66';for(let i=0;i<5;i++){q.beginPath();q.arc(100+i*220,H,120+i%2*60,Math.PI,0);q.fill()}q.fillStyle='#ffd21f';q.beginPath();q.arc(950,H*.3,45,0,7);q.fill();q.fillStyle='#222';q.font='bold 56px sans-serif';q.textAlign='center';q.fillText(cap,512,72);q.lineWidth=5;q.strokeStyle='#222';MC.forEach((col,i)=>{const cx=1024/6*(i+1),cy=H*.65;q.fillStyle=col;q.beginPath();q.ellipse(cx,cy,70,100,0,0,7);q.fill();q.stroke();q.fillStyle='#fff';[-25,25].forEach(d=>{q.beginPath();q.arc(cx+d,cy-30,18,0,7);q.fill();q.stroke()});q.fillStyle='#000';[-25,25].forEach(d=>{q.beginPath();q.arc(cx+d,cy-28,8,0,7);q.fill()});q.beginPath();q.arc(cx,cy,30,.1,Math.PI-.1);q.stroke()});const m=new T.Mesh(new T.PlaneGeometry(w,h),new T.MeshBasicMaterial({map:new T.CanvasTexture(c),color:0x999999}));m.position.set(x,y,z);m.rotation.y=ry;sc.add(m)}
@@ -180,7 +187,7 @@ setTimeout(()=>say('Dad, is that you?',2200,'Tommy'),4600);
 setTimeout(()=>{lime.visible=true},6500);
 setTimeout(()=>{dLift.m.visible=false;S.lgf=1;$('fl').style.opacity=.85;shake=.15;groan(120,1.2);S.lm=1;say('*CRASH!* Mr Large Lime Man tears the elevator apart!',3000)},8000);
 setTimeout(()=>say('RAAAAAAGH!',2500,'Mr Large Lime Man'),9000);
-setTimeout(()=>{const o=$('ov');o.style.display='flex';o.style.background='#000';o.onclick=null;o.textContent='GARDEN OF BANAN\nCHAPTER 1 COMPLETE\n\nTo be continued...'},12000)}
+setTimeout(()=>{const o=$('ov');o.style.display='flex';o.style.background='#000';o.onpointerdown=null;o.textContent='GARDEN OF BANAN\nCHAPTER 1 COMPLETE\n\nTo be continued...'},12000)}
 addEventListener('keydown',e=>{K[e.code]=1;if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();if(S.note){if(e.code=='KeyE'||e.code=='Escape')closeNote();return}if(!S.go||S.end)return;if(e.code=='KeyE'&&cur)cur.act();if(e.code=='KeyF')toggleDrone()});
 addEventListener('keyup',e=>K[e.code]=0);
 g.addEventListener('mousedown',()=>{drag=1;if(S.go)try{g.requestPointerLock()}catch(e){}});addEventListener('mouseup',()=>drag=0);
@@ -217,5 +224,5 @@ cam.rotation.set(pit,yaw,0,'YXZ');R.render(sc,cam)}
 requestAnimationFrame(loop);
 // intro cutscene (with voices)
 const L=['Dad pulls up to a big, colorful building...','Dad: Alright Little Tommy, here\'s your kindergarten.\n...I mean preschool!','Tommy: Bye Dad!','Dad: Be good. I\'ll pick you up later!','You are Little Tommy.\nFind a way through the Garden of Banan preschool.\n\nWASD move | Mouse look (click or drag) | Arrow keys turn\nE interact | Space jump | F drone (Space up, Shift down)\nMobile: joystick, drag to look, ✋ interact, 🚁 drone, ⬆️ jump\n\nClick or tap to start'];let li=0;const ov=$('ov');ov.textContent='GARDEN OF BANAN\nChapter 1\n\nClick to begin';
-ov.onclick=()=>{if(li<L.length){const l=L[li++];ov.textContent=l;const m=l.match(/^(Dad|Tommy): ([\s\S]*)/);if(m)voice(m[2].replace(/\n/g,' '),m[1])}else{ov.style.display='none';S.go=1;say('Where am I... this isn\'t kindergarten.',3500,'Tommy');try{g.requestPointerLock()}catch(e){}}};
+ov.onpointerdown=()=>{if(li<L.length){const l=L[li++];ov.textContent=l;const m=l.match(/^(Dad|Tommy): ([\s\S]*)/);if(m)voice(m[2].replace(/\n/g,' '),m[1])}else{ov.style.display='none';S.go=1;say('Where am I... this isn\'t kindergarten.',3500,'Tommy');try{g.requestPointerLock()}catch(e){}}};
 </script></body></html>
