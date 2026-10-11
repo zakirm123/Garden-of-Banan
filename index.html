@@ -1,0 +1,221 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Garden of Banan – Chapter 1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--bg:#0a0a14;--fg:#fff;--ac:#ffd21f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%;margin:0;overflow:hidden;background:var(--bg);color:var(--fg);font-family:system-ui,sans-serif}
+#g{position:absolute;inset:0;touch-action:none}
+.h{position:absolute;pointer-events:none;text-shadow:0 2px 4px #000;font-weight:600}
+#obj{top:calc(10px + env(safe-area-inset-top,0px));left:12px;max-width:60%;color:var(--ac)}
+#inv{top:calc(10px + env(safe-area-inset-top,0px));right:12px;text-align:right;font-size:14px}
+#pr{bottom:22%;width:100%;text-align:center;font-size:18px}
+#sub{bottom:9%;width:100%;text-align:center;font-size:20px;padding:0 10%;box-sizing:border-box}
+#cr{left:50%;top:50%;width:6px;height:6px;margin:-3px;border-radius:50%;background:#fff8}
+#ov{position:absolute;inset:0;background:#000;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;font-size:22px;cursor:pointer;flex-direction:column;gap:16px;z-index:5;box-sizing:border-box;white-space:pre-line}
+#fl{position:absolute;inset:0;background:#f00;opacity:0;pointer-events:none;transition:opacity .3s}
+#nt{display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(86%,430px);max-height:80%;overflow:auto;background:#f4e6c4;color:#3a2a14;padding:20px;font:17px/1.4 Georgia,serif;white-space:pre-line;z-index:6;box-shadow:0 0 40px #000;cursor:pointer;box-sizing:border-box}
+#tc{display:none}.tch #tc{display:block;position:absolute;inset:0;pointer-events:none;z-index:3}#tc>*{pointer-events:auto}
+#js{position:absolute;left:calc(18px + env(safe-area-inset-left,0px));bottom:calc(28px + env(safe-area-inset-bottom,0px));width:120px;height:120px;border-radius:50%;background:#ffffff22;border:2px solid #fff6;touch-action:none}
+#kn{position:absolute;left:40px;top:40px;width:40px;height:40px;border-radius:50%;background:#fffc;pointer-events:none}
+.tb{position:absolute;width:64px;height:64px;border-radius:50%;background:#ffffff33;border:2px solid #fff8;font-size:28px;display:flex;align-items:center;justify-content:center;touch-action:none;user-select:none;-webkit-user-select:none}
+</style></head><body>
+<div id="g"></div><div id="fl"></div><div id="cr" class="h"></div>
+<div id="obj" class="h"></div><div id="inv" class="h"></div><div id="pr" class="h"></div><div id="sub" class="h"></div>
+<div id="nt"></div>
+<div id="tc"><div id="js"><div id="kn"></div></div><div class="tb" id="bI" style="right:22px;bottom:40px;width:84px;height:84px">✋</div><div class="tb" id="bJ" style="right:122px;bottom:28px">⬆️</div><div class="tb" id="bF" style="right:22px;bottom:140px">🚁</div><div class="tb" id="bD" style="right:122px;bottom:110px;display:none">⬇️</div></div>
+<div id="ov"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+window.onerror=(m,s,l)=>{const d=document.getElementById('ov');d.style.display='flex';d.textContent='Error: '+m+' (line '+l+')'};
+const T=THREE,$=id=>document.getElementById(id),g=$('g');
+const sc=new T.Scene();sc.background=new T.Color(0x0a0a14);sc.fog=new T.Fog(0x0a0a14,6,36);
+const cam=new T.PerspectiveCamera(70,1,.1,100),R=new T.WebGLRenderer({antialias:true});g.appendChild(R.domElement);
+function rs(){R.setSize(g.clientWidth,g.clientHeight);cam.aspect=g.clientWidth/g.clientHeight;cam.updateProjectionMatrix()}addEventListener('resize',rs);rs();
+sc.add(new T.AmbientLight(0xffffff,.45),new T.HemisphereLight(0xffffff,0x444455,.2));
+const dl=new T.DirectionalLight(0xffffff,.2);dl.position.set(5,10,5);sc.add(dl);
+const mc={},M=c=>mc[c]||(mc[c]=new T.MeshLambertMaterial({color:c}));
+const PAL=[0xe23030,0xffd21f,0x3ecf3e,0x8b5a2b,0xffffff,0x2f6bff];
+function bx(w,h,d,x,y,z,c){const m=new T.Mesh(new T.BoxGeometry(w,h,d),M(c));m.position.set(x,y,z);sc.add(m);return m}
+function pl(w,d,x,z,y,c,rx=-Math.PI/2){const m=new T.Mesh(new T.PlaneGeometry(w,d),new T.MeshLambertMaterial({color:c,side:2}));m.rotation.x=rx;m.position.set(x,y,z);sc.add(m)}
+const C=[],D=[],IA=[];
+function W(x0,z0,x1,z1,c=0xd8c7a0){const t=.3,h=3.5,w=Math.abs(x1-x0)+(x0==x1?t:0),d=Math.abs(z1-z0)+(z0==z1?t:0),cx=(x0+x1)/2,cz=(z0+z1)/2;bx(w,h,d,cx,h/2,cz,c);C.push({x0:cx-w/2,x1:cx+w/2,z0:cz-d/2,z1:cz+d/2,on:1})}
+function door(x,z,w,ax,c){const t=.3,sw=ax=='z'?w:t,sd=ax=='z'?t:w,m=bx(sw,3.5,sd,x,1.75,z,c),col={x0:x-sw/2,x1:x+sw/2,z0:z-sd/2,z1:z+sd/2,on:1},d={m,col,open:0,t:0};C.push(col);D.push(d);return d}
+const openD=d=>{d.open=1;d.col.on=0};
+// floors & ceiling
+pl(80,72,10,6,0,0xb5ab90);pl(80,20,10,60,0,0xb5ab90);pl(80,100,10,20,3.5,0x2c2c36,Math.PI/2);
+pl(40,12,20,36,.01,0x40384f);pl(40,10,20,55,.01,0x40384f);
+// lobby + cafeteria (with hidden pink door)
+[[-24,-8,-19.2,-8],[-16.8,-8,-1.5,-8],[1.5,-8,8,-8],[-24,8,8,8],[-24,-8,-24,8],[8,-8,8,-1.5],[8,1.5,8,8]].forEach(a=>W(...a));
+const dBlue=door(0,-8,3,'z',0x3b6cff),dYel=door(8,0,3,'x',0xffd21f),dPink=door(-18,-8,2.4,'z',0xd8c7a0);
+// secret pink room
+[[-22,-16,-22,-8],[-14,-16,-14,-8],[-22,-16,-14,-16]].forEach(a=>W(...a,0xff9fcf));pl(8,8,-18,-12,.02,0xff7fb7);
+// electrical
+[[-4,-16,-4,-8],[4,-16,4,-8],[-4,-16,4,-16]].forEach(a=>W(...a,0xb8c4d0));
+// hall, playground, classroom, storage, lift corridor
+[[8,-3,18,-3],[21,-3,28,-3],[28,-3,28,3],[8,3,12,3],[16,3,28,3]].forEach(a=>W(...a,0xbfe3f2));
+[[10,3,10,19],[26,3,26,19],[10,19,20,19],[24,19,26,19]].forEach(a=>W(...a,0xffc9a8));
+[[20,19,20,30],[24,19,24,30]].forEach(a=>W(...a,0x8a8a99));
+[[10,-19,10,-3],[26,-19,26,-3],[10,-19,26,-19],[22,-19,22,-14],[25,-14,26,-14]].forEach(a=>W(...a,0xd8f0c0));
+const dPur=door(19.5,-3,3,'z',0xb050ff),dSto=door(23.5,-14,3,'z',0xe23030);
+// chamber + elevator room
+[[0,30,20,30],[24,30,40,30],[0,60,40,60],[0,30,0,60],[40,30,40,60]].forEach(a=>W(...a,0x6a6480));
+[[12,54,12,60],[28,54,28,60],[12,54,18,54],[22,54,28,54],[18,56.5,18,60],[22,56.5,22,60]].forEach(a=>W(...a,0x8a8a99));
+const dEl=door(20,54,4,'z',0xffd21f),dLift=door(20,56.5,4,'z',0x6b7078);
+// helpers
+function eye(g,x,y,z,s=.09){for(const k of[-1,1]){const e=new T.Mesh(new T.SphereGeometry(s*1.6,10,10),M(0xffffff)),p=new T.Mesh(new T.SphereGeometry(s,8,8),M(0));e.position.set(x*k,y,z);p.position.set(x*k,y,z+s*1.2);g.add(e,p)}}
+function ch(k,col){const g=new T.Group(),mt=M(col).clone(),add=(geo,m,x,y,z,sx=1,sy=1,sz=1)=>{const o=new T.Mesh(geo,m);o.position.set(x,y,z);o.scale.set(sx,sy,sz);g.add(o);return o},Sp=r=>new T.SphereGeometry(r,16,12);
+if(k=='egg'){add(Sp(.5),mt,0,.6,0,.9,1.25,.9);add(new T.ConeGeometry(.12,.3,8),M(0xff9a1f),0,.75,.5).rotation.x=Math.PI/2;eye(g,.18,.95,.38)}
+else if(k=='lime'){add(Sp(.7),mt,0,1.1,0,1,1.5,1);eye(g,.25,1.7,.6,.1);add(new T.BoxGeometry(.35,1.1,.35),M(0x1d6b1d),-.95,1.1,0);add(new T.BoxGeometry(.35,1.1,.35),M(0x1d6b1d),.95,1.1,0)}
+else if(k=='pbj'){add(new T.BoxGeometry(.9,1.4,.5),mt,0,.9,0);add(new T.BoxGeometry(.92,.35,.52),M(0x7b1fa2),0,.6,0);add(Sp(.3),M(0xd9a441),0,1.75,0);eye(g,.17,1.5,.26)}
+else{add(new T.CylinderGeometry(.35,.45,1.4,14),mt,0,.8,0);add(Sp(.4),mt,0,1.5,0,1,.8,1);add(new T.CylinderGeometry(.06,.08,.25),M(0x6b4a1f),0,1.95,0);eye(g,.17,1.35,.35);
+if(k=='banaleena'){add(new T.ConeGeometry(.15,.3,8),M(0xff2d95),-.2,1.95,0).rotation.z=Math.PI/2;add(new T.ConeGeometry(.15,.3,8),M(0xff2d95),.2,1.95,0).rotation.z=-Math.PI/2}}
+return{g,mt}}
+function tp(t,w,h,x,y,z,ry=0,bg='#fff8e1',fg='#222',fs=34){const c=document.createElement('canvas');c.width=512;c.height=Math.round(512*h/w);const q=c.getContext('2d');q.fillStyle=bg;q.fillRect(0,0,512,c.height);q.fillStyle=fg;q.textAlign='center';q.font='bold '+fs+'px sans-serif';const L=t.split('\n');L.forEach((l,i)=>q.fillText(l,256,c.height/(L.length+1)*(i+1)+10));const m=new T.Mesh(new T.PlaneGeometry(w,h),new T.MeshBasicMaterial({map:new T.CanvasTexture(c),color:0xb4b4b4}));m.position.set(x,y,z);m.rotation.y=ry;sc.add(m)}
+const kc=(x,y,z,c,v=1)=>{const m=bx(.5,.05,.3,x,y,z,c);m.visible=!!v;return m};
+const ia=(x,y,z,r,m,ok,t,act)=>IA.push({x,y,z,r,m,ok,t,act});
+const S={go:0,blue:0,batt:0,remote:0,btn1:0,eggs:0,fed:0,purple:0,glass:0,btn2:0,hammer:0,wood:0,lifted:0,solved:0,yellow:0,plat:0,chase:0,fell:0,elev:0,end:0,dr:0,launched:0,pink:0,note:0,ride:0,rt:0,rise:0};
+// voices (browser speech)
+const VP={'Tommy':[1.7,1.1],'Dad':[.6,.9],'Eggy Bird':[1.6,1.3],'Mr Large Lime Man':[.1,.6]};
+function voice(t,who){try{const p=VP[who];if(!p||!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.pitch=p[0];u.rate=p[1];speechSynthesis.speak(u)}catch(e){}}
+let st=0;const say=(t,ms=3500,who)=>{$('sub').textContent=who?who+': '+t:t;if(who)voice(t.replace(/\*/g,''),who);clearTimeout(st);st=setTimeout(()=>$('sub').textContent='',ms)};
+const NOTE='A note from Dad\n\nDear Tommy,\n\nIf you are reading this, you found my secret room. I am so proud of you.\n\nThis is not a normal preschool. I am sorry I lied to you.\n\nDo not trust the Banan family, and never let Eggy Bird catch you. The elevator at the end goes down to where I am. Keep going, buddy.\n\nP.S. Always carry a Snickers bar. You get grumpy when you are hungry.\n\nLove, Dad\n\n(tap or press E to close)';
+function note(){S.note=1;$('nt').textContent=NOTE;$('nt').style.display='block';voice(NOTE.replace(/\(tap.*\)/,'').replace(/\n+/g,' '),'Dad')}
+function closeNote(){S.note=0;$('nt').style.display='none';try{speechSynthesis.cancel()}catch(e){}}
+$('nt').onclick=closeNote;
+// DECOR
+const MC=['#e23030','#ffd21f','#3ecf3e','#8b5a2b','#ffffff'];
+function mural(x,y,z,ry,w,h,bg,cap){const c=document.createElement('canvas');c.width=1024;const H=c.height=Math.round(1024*h/w),q=c.getContext('2d');q.fillStyle=bg;q.fillRect(0,0,1024,H);q.fillStyle='#ffffff66';for(let i=0;i<5;i++){q.beginPath();q.arc(100+i*220,H,120+i%2*60,Math.PI,0);q.fill()}q.fillStyle='#ffd21f';q.beginPath();q.arc(950,H*.3,45,0,7);q.fill();q.fillStyle='#222';q.font='bold 56px sans-serif';q.textAlign='center';q.fillText(cap,512,72);q.lineWidth=5;q.strokeStyle='#222';MC.forEach((col,i)=>{const cx=1024/6*(i+1),cy=H*.65;q.fillStyle=col;q.beginPath();q.ellipse(cx,cy,70,100,0,0,7);q.fill();q.stroke();q.fillStyle='#fff';[-25,25].forEach(d=>{q.beginPath();q.arc(cx+d,cy-30,18,0,7);q.fill();q.stroke()});q.fillStyle='#000';[-25,25].forEach(d=>{q.beginPath();q.arc(cx+d,cy-28,8,0,7);q.fill()});q.beginPath();q.arc(cx,cy,30,.1,Math.PI-.1);q.stroke()});const m=new T.Mesh(new T.PlaneGeometry(w,h),new T.MeshBasicMaterial({map:new T.CanvasTexture(c),color:0x999999}));m.position.set(x,y,z);m.rotation.y=ry;sc.add(m)}
+mural(3,1.9,7.85,Math.PI,8,2.6,'#8fd3e8','WELCOME, FRIENDS!');mural(-23.85,1.9,0,Math.PI/2,12,2.6,'#ffe08a','SHARE YOUR LUNCH!');mural(13,1.9,-2.85,0,8,2,'#b6e3a8','BE KIND');mural(22,1.9,2.85,Math.PI,8,2,'#ffb4a8','PLAY NICE');mural(25.85,1.9,9,-Math.PI/2,10,2.6,'#c7b3ff','PLAYTIME!');
+const chk=(()=>{const c=document.createElement('canvas');c.width=c.height=64;const q=c.getContext('2d');q.fillStyle='#c9bb94';q.fillRect(0,0,64,64);q.fillStyle='#6fa5b8';q.fillRect(0,0,32,32);q.fillRect(32,32,32,32);return c})();
+function tile(x0,x1,z0,z1){const t=new T.CanvasTexture(chk);t.wrapS=t.wrapT=T.RepeatWrapping;t.repeat.set((x1-x0)/2,(z1-z0)/2);const m=new T.Mesh(new T.PlaneGeometry(x1-x0,z1-z0),new T.MeshLambertMaterial({map:t}));m.rotation.x=-Math.PI/2;m.position.set((x0+x1)/2,.005,(z0+z1)/2);sc.add(m)}
+tile(-24,8,-8,8);tile(8,28,-3,3);tile(10,26,3,19);tile(10,26,-19,-3);
+[[4,0xe23030],[3.3,0xffd21f],[2.6,0x3ecf3e],[1.9,0x2f6bff]].forEach(([r,c],i)=>{const m=new T.Mesh(new T.CylinderGeometry(r,r,.02,32),M(c));m.position.set(-2,.02+i*.01,2);sc.add(m)});
+for(let i=0;i<10;i++){const b=bx(.5,.5,.5,-7+i*.6,.25,6.7,PAL[i%6]);b.rotation.y=Math.random()*3}
+const lamp=(x,z)=>{const m=new T.Mesh(new T.BoxGeometry(1.6,.08,.6),new T.MeshBasicMaterial({color:0xcfc59a}));m.position.set(x,3.44,z);sc.add(m)};
+[-18,-10,-2,6].forEach(x=>[-4,4].forEach(z=>lamp(x,z)));[13,23].forEach(x=>lamp(x,0));[14,22].forEach(x=>[8,15].forEach(z=>lamp(x,z)));[15,21].forEach(x=>[-14,-8].forEach(z=>lamp(x,z)));lamp(0,-13);lamp(22,25);lamp(20,35);lamp(20,57);
+[[-14,0],[0,0],[18,0],[18,11],[18,-10]].forEach(([x,z])=>{const l=new T.PointLight(0xfff0d0,.35,22);l.position.set(x,3,z);sc.add(l)});
+// LOBBY
+bx(3,.8,1.2,5,.4,-7,0x8b5a2b);bx(1,.7,.1,5,1.15,-7.3,0x222222);bx(.9,.55,.02,5,1.15,-7.24,0x4ae0ff);
+const kc1=kc(6.2,.85,-6.6,0x2f6bff);
+ia(6.2,.85,-6.6,2.2,'p',()=>!S.blue,()=>'Take blue keycard',()=>{S.blue=1;kc1.visible=false;say('Got the blue keycard!',2000,'Tommy')});
+ia(0,1.4,-7,2.8,'p',()=>!dBlue.open,()=>S.blue?'Open door (blue keycard)':'Locked',()=>S.blue?openD(dBlue):say('Locked. I need a blue keycard.',2500,'Tommy'));
+tp('GARDEN OF BANAN\nPRESCHOOL',4,1.4,-8,2.2,7.8,Math.PI,'#ffd21f');
+const rb=bx(.5,.5,.1,6,2.9,-7.85,0x555555),rb1=new T.Mesh(new T.CylinderGeometry(.15,.15,.1,12),M(0xff0000));rb1.rotation.x=Math.PI/2;rb1.position.set(6,2.9,-7.75);sc.add(rb1);
+ia(6,2.9,-7.5,2.6,'d',()=>!S.btn1,()=>'Press red button',()=>{S.btn1=1;openD(dYel);say('The yellow door unlocked!',2500)});
+// secret pink door sticker, keycard, room
+tp('♥',.7,.7,-18,1.4,-7.82,0,'#e6d6b0','#ff2d95',340);
+ia(-18,1.4,-7,2.8,'p',()=>!dPink.open,()=>S.pink?'Open secret door (pink keycard)':'Locked (pink card reader)',()=>S.pink?(openD(dPink),say('Whoa, a secret room!',2500,'Tommy')):say('There is a pink card reader here...',2500,'Tommy'));
+const kcK=kc(3,.12,-15.5,0xff2d95);
+ia(3,.15,-15.4,2.3,'p',()=>!S.pink,()=>'Take secret pink keycard',()=>{S.pink=1;kcK.visible=false;say('A pink keycard! What does it open?',3000,'Tommy')});
+bx(2,.7,1,-18,.35,-13.5,0xff9fcf);bx(.5,.02,.4,-18,.71,-13.5,0xffffff);tp('♥ SECRET ♥',3,.8,-18,2.4,-15.84,0,'#ff9fcf','#fff');
+const pk=new T.PointLight(0xff77bb,.8,10);pk.position.set(-18,2.5,-12);sc.add(pk);
+ia(-18,.8,-13.5,2.6,'p',()=>true,()=>'Read note from Dad',note);
+// CAFETERIA
+[[-16,-5],[-20,4],[-14,2],[-19,-3]].forEach(([x,z],i)=>{bx(2.2,.8,1.2,x,.4,z,0xc08040);if(i<2){const b=new T.Mesh(new T.CylinderGeometry(.12,.12,.3,10),M(0x22cc44));b.position.set(x,.95,z);sc.add(b);ia(x,.95,z,2.2,'p',()=>b.visible,()=>'Take battery',()=>{b.visible=false;S.batt++;say('Battery '+S.batt+'/2',1500)})}});
+// ELECTRICAL
+bx(3,.8,1.2,0,.4,-14,0x777788);
+const dm=new T.Group();dm.add(new T.Mesh(new T.BoxGeometry(.4,.1,.4),M(0x222222)));[[-.25,-.25],[.25,-.25],[-.25,.25],[.25,.25]].forEach(([a,b])=>{const r=new T.Mesh(new T.CylinderGeometry(.14,.14,.02,10),M(0x66ccff));r.position.set(a,.07,b);dm.add(r)});dm.position.set(-.8,.9,-14);sc.add(dm);
+bx(.5,.1,.3,.8,.85,-14,0x333333);
+ia(.8,.9,-14,2.2,'p',()=>!S.remote,()=>S.batt<2?'Remote needs 2 batteries ('+S.batt+'/2)':'Put batteries in drone remote',()=>{if(S.batt<2)return say('The remote needs 2 batteries. Maybe the cafeteria?',3000,'Tommy');S.remote=1;say('Woah, technology! (Press F to use the drone)',4000,'Tommy')});
+// PLAYGROUND
+const eg1=ch('egg',0xfffbe8).g;eg1.position.set(13,.5,8);eg1.rotation.z=Math.PI/2;sc.add(eg1);
+tp('EGGY BIRD MISSION\nFeed me 6 eggs\nI\'m hungry',3,1.6,10.2,1.8,8,Math.PI/2);
+[[-5,5],[-18,-4.2],[-14,5.5],[16,1.2],[13,16],[23,7]].forEach(([x,z])=>{const m=new T.Mesh(new T.SphereGeometry(.2,10,10),M(0xfff6dd));m.scale.y=1.3;m.position.set(x,.26,z);sc.add(m);ia(x,.3,z,2.2,'p',()=>m.visible,()=>'Pick up egg',()=>{m.visible=false;S.eggs++;say('Egg '+S.eggs+'/6',1500)})});
+const kcP=kc(13.4,.6,8,0xb050ff,0);
+ia(13,.5,8,2.8,'p',()=>!S.fed,()=>S.eggs<6?'Eggy is hungry ('+S.eggs+'/6 eggs)':'Feed Eggy 6 eggs',()=>{if(S.eggs<6)return say('Feed me 6 eggs... I\'m hungry.',3000,'Eggy Bird');S.fed=1;kcP.visible=true;say('Yum! Thank you! Take this keycard!',3500,'Eggy Bird')});
+ia(13.4,.6,8,2.2,'p',()=>S.fed&&!S.purple,()=>'Take purple keycard',()=>{S.purple=1;kcP.visible=false;say('Got the purple keycard!',2000,'Tommy')});
+ia(19.5,1.4,-2,2.8,'p',()=>!dPur.open,()=>S.purple?'Open Classroom (purple keycard)':'Locked',()=>S.purple?openD(dPur):say('Locked. Needs a purple keycard.',2500,'Tommy'));
+// CLASSROOM
+tp('BANAN\nSharing is Caring,\nEating me is not fine',5,2.4,18,2,-18.85,0,'#fff3a0');
+const bn=ch('banan',0xe23030).g;bn.position.set(13,0,-17.5);bn.scale.setScalar(1.4);sc.add(bn);
+[[14,-8],[18,-8],[22,-8],[14,-12],[18,-12]].forEach(([x,z])=>bx(1.6,.7,.9,x,.35,z,0xc08040));
+const glass=new T.Mesh(new T.BoxGeometry(.8,1.2,1.2),new T.MeshLambertMaterial({color:0xffe14a,transparent:true,opacity:.45}));glass.position.set(10.7,1.6,-10);sc.add(glass);
+const rb2=new T.Mesh(new T.CylinderGeometry(.18,.18,.1,12),M(0xff0000));rb2.rotation.z=Math.PI/2;rb2.position.set(10.3,1.6,-10);sc.add(rb2);
+ia(10.8,1.6,-10,2.3,'d',()=>!S.glass,()=>'Break the yellow glass',()=>{S.glass=1;glass.visible=false;say('*CRASH*',1500)});
+ia(10.4,1.6,-10,2.3,'d',()=>S.glass&&!S.btn2,()=>'Press red button',()=>{S.btn2=1;openD(dSto);say('The storage room opened!',2500)});
+const ham=new T.Group(),hh=new T.Mesh(new T.BoxGeometry(.4,.2,.2),M(0x888888));hh.position.y=.4;ham.add(new T.Mesh(new T.BoxGeometry(.1,.7,.1),M(0x8b5a2b)),hh);ham.position.set(24,.7,-17.2);ham.rotation.z=1.4;sc.add(ham);
+ia(24,.7,-17.2,2.2,'p',()=>!S.hammer,()=>'Take hammer',()=>{S.hammer=1;ham.visible=false;say('A hammer! Time to smash stuff!',2500,'Tommy')});
+// BALL PIT + LIFT
+bx(8,.3,6.6,22,.15,16,0x3a5ec4);
+const bp=new T.InstancedMesh(new T.SphereGeometry(.22,8,6),M(0xffffff),200),o3=new T.Object3D();for(let i=0;i<200;i++){o3.position.set(18.3+Math.random()*7.4,.4+Math.random()*.2,13+Math.random()*5.8);o3.updateMatrix();bp.setMatrixAt(i,o3.matrix);bp.setColorAt(i,new T.Color(PAL[i%6]))}sc.add(bp);
+const wood=bx(8,2,.3,22,1,12.5,0x8b5a2b);C.push({x0:18,x1:26,z0:12.3,z1:12.7,on:1});const wc=C[C.length-1];
+ia(22,1,12,4.8,'p',()=>!S.wood,()=>S.hammer?'Smash the wood':'Blocked by wood...',()=>{if(!S.hammer)return say('I need something to break this.',2500,'Tommy');S.wood=1;wood.visible=false;wc.on=0;say('Smash!',1500,'Tommy')});
+const pad=new T.Mesh(new T.CylinderGeometry(1.2,1.2,.2,16),M(0x999999));pad.position.set(22,.2,17);sc.add(pad);
+ia(22,.4,17,2.4,'p',()=>S.wood&&!S.lifted&&!S.ride,()=>'Ride the lift',()=>{S.ride=1;S.rt=0;P.x=22;P.z=17;say('Woah, the lift is moving!',3000,'Tommy')});
+// CHAMBER
+tp('COLOR THE FRIENDS\nBanan: red\nBananaleena: yellow\nLime Man: lime green\nPBJ Man: brown\nEggy Bird: white',7,3,9,2.2,30.2,0,'#222','#ffd21f');
+const kcY=kc(20,.95,36,0xffd21f,0),ci=[-1,-1,-1,-1,-1];bx(1,.7,1,20,.35,36,0x555566);
+[['Banan','banan'],['Bananaleena','banaleena'],['Mr Large Lime Man','lime'],['PBJ Man','pbj'],['Eggy Bird','egg']].forEach(([n,k],i)=>{const x=8+i*6,{g,mt}=ch(k,0x888888);bx(1.2,.5,1.2,x,.25,32.5,0x555566);g.position.set(x,.5,32.5);sc.add(g);tp(n,1.1,.35,x,.25,33.12);ia(x,.8,32.5,2.4,'p',()=>!S.solved,()=>n+': change color',()=>{ci[i]=(ci[i]+1)%6;mt.color.setHex(PAL[ci[i]]);if(ci.every((v,j)=>v==j)){S.solved=1;kcY.visible=true;say('Yes! I solved it! A yellow keycard appeared!',3500,'Tommy')}})});
+ia(20,.9,36,2.2,'p',()=>S.solved&&!S.yellow,()=>'Take yellow keycard',()=>{S.yellow=1;kcY.visible=false;eg.visible=true;eg.position.set(20,0,31.5);say('Hey there, are you food?',4000,'Eggy Bird')});
+const eg=ch('egg',0xfffbe8).g;eg.scale.setScalar(1.8);eg.position.set(20,0,31.5);eg.visible=false;sc.add(eg);
+const plat=bx(4,.3,8.4,20,-.15,46,0xaaaaaa);plat.visible=false;
+const bt=(x,z)=>{bx(.5,1,.5,x,.5,z,0x333333);const b=new T.Mesh(new T.CylinderGeometry(.18,.18,.12,12),M(0xff0000));b.position.set(x,1.05,z);sc.add(b)};bt(24,41.2);bt(26,51.3);
+tp('EMERGENCY STOP',1.6,.4,26,1.5,51.3,Math.PI,'#f00','#fff');
+ia(24,1.2,41.2,2.4,'p',()=>S.yellow&&!S.plat,()=>'Press red button (unlock platform)',()=>{S.plat=1;S.chase=1;plat.visible=true;plat.position.y=-.15;say('Platform unlocked. RUN!',2500)});
+ia(26,1.2,51.3,2.4,'p',()=>S.plat&&!S.fell&&S.chase,()=>'EMERGENCY STOP',()=>{if(eg.position.z>42.2&&eg.position.z<49.8){S.fell=1;S.chase=0;say('You should\'ve eaten a Snickers bar.',4500,'Tommy')}else say('Wait until she\'s on the platform!',2000)});
+ia(20,1.4,52.9,3,'p',()=>!dEl.open,()=>S.yellow?'Open elevator room (yellow keycard)':'Locked',()=>S.yellow?openD(dEl):say('Locked.',2000));
+// ELEVATOR (industrial platform lift: blue steel floor, two round hatches, pipe railings)
+const lg=new T.Group();lg.position.set(20,-4,58.3);sc.add(lg);
+const lb=(w,h,d,x,y,z,c)=>{const m=new T.Mesh(new T.BoxGeometry(w,h,d),M(c));m.position.set(x,y,z);lg.add(m)};
+lb(3.9,.08,3.3,0,.04,0,0x1f3a7a);lb(3.9,.03,.05,0,.09,0,0x0e1c40);lb(.05,.03,3.3,0,.09,0,0x0e1c40);lb(.05,.03,3.3,-1.2,.09,0,0x0e1c40);lb(.05,.03,3.3,1.2,.09,0,0x0e1c40);
+lb(3.96,.14,.1,0,.05,-1.65,0x5a5348);lb(3.96,.14,.1,0,.05,1.65,0x5a5348);lb(.1,.14,3.3,-1.95,.05,0,0x5a5348);lb(.1,.14,3.3,1.95,.05,0,0x5a5348);
+[[-.9,-.7],[1,.7]].forEach(([x,z])=>{const h=new T.Mesh(new T.CylinderGeometry(.5,.5,.06,20),M(0x6b6558));h.position.set(x,.11,z);lg.add(h)});
+const post=(x,z)=>{const p=new T.Mesh(new T.CylinderGeometry(.035,.035,1.1,6),M(0x9aa0a6));p.position.set(x,.6,z);lg.add(p)};
+for(let i=0;i<=4;i++)post(-1.8+i*.9,1.55);for(let i=0;i<=3;i++){post(-1.85,-1.55+i*1.033);post(1.85,-1.55+i*1.033)}
+[.6,1.1].forEach(y=>{lb(3.7,.05,.05,0,y,1.55,0x9aa0a6);lb(.05,.05,3.1,-1.85,y,0,0x9aa0a6);lb(.05,.05,3.1,1.85,y,0,0x9aa0a6)});
+bx(.2,.5,.4,27.85,1.3,55.5,0x333344);bx(.05,.12,.2,27.72,1.4,55.5,0x00ff66);
+ia(27.5,1.3,55.5,2.4,'p',()=>!dLift.open&&!S.rise,()=>'Use keycard reader',()=>{S.rise=1;say('The elevator is coming up...',2500)});
+const lime=ch('lime',0x6bd13a).g;lime.scale.setScalar(1.8);lime.position.set(20,0,54.6);lime.visible=false;sc.add(lime);
+// state/player
+const P={x:0,z:5,h:0,vy:0},Dp={x:0,y:1.3,z:0},K={};let yaw=0,pit=0,cur=null,shake=0,drag=0;
+const hit=(x,z,r)=>{for(const c of C)if(c.on&&x>c.x0-r&&x<c.x1+r&&z>c.z0-r&&z<c.z1+r)return 1;return 0};
+const mv=(o,dx,dz,r)=>{if(!hit(o.x+dx,o.z,r))o.x+=dx;if(!hit(o.x,o.z+dz,r))o.z+=dz};
+function obj(){if(!S.blue)return'Grab the blue keycard next to the computer';if(!dBlue.open)return'Open the blue door to the electrical room';if(!S.remote)return S.batt<2?'Get 2 batteries from the cafeteria ('+S.batt+'/2)':'Put the batteries in the drone remote';if(!S.btn1)return'Press F to fly the drone and press the red button in the lobby';if(!S.fed)return S.eggs<6?'Go to the playground. Find eggs ('+S.eggs+'/6)':'Feed Eggy 6 eggs';if(!S.purple)return'Take the purple keycard';if(!dPur.open)return'Open the Classroom door';if(!S.btn2)return S.glass?'Use the drone to press the red button':'Use the drone to break the yellow glass';if(!S.hammer)return'Get the hammer from the storage room';if(!S.wood)return'Break the wood in the ball pit';if(!S.lifted)return'Ride the lift in the ball pit';if(!S.yellow)return S.solved?'Take the yellow keycard':'Solve the color puzzle';if(!S.fell)return S.plat?'Cross it, then hit EMERGENCY STOP when Eggy is on the platform!':'Press the red button to unlock the platform';if(!dEl.open)return'Open the elevator room with the yellow keycard';return S.elev?'Step into the elevator':'Use the keycard reader to call the elevator'}
+function reset(m){P.x=20;P.z=38;yaw=0;S.plat=0;S.chase=0;plat.visible=false;eg.position.set(20,0,31.5);say(m,2500)}
+function toggleDrone(){if(!S.remote||S.end||!S.go||S.note)return;S.dr=!S.dr;if(S.dr){Dp.x=P.x;Dp.z=P.z;Dp.y=1.3;S.launched=1;dm.visible=false;say('Woah, technology!',2500,'Tommy')}}
+function groan(f,d){try{const a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),n=a.createGain();o.type='sawtooth';o.frequency.setValueAtTime(f,a.currentTime);o.frequency.linearRampToValueAtTime(f*.5,a.currentTime+d);n.gain.value=.25;o.connect(n);n.connect(a.destination);o.start();o.stop(a.currentTime+d)}catch(e){}}
+function ending(){S.end=1;yaw=0;pit=0;dLift.open=0;dLift.t=0;dLift.m.position.y=1.75;dLift.col.on=1;shake=.03;say('The elevator is going down...',2200);
+setTimeout(()=>{groan(70,2.5);say('*groooaaan*',2200)},2300);
+setTimeout(()=>say('Dad, is that you?',2200,'Tommy'),4600);
+setTimeout(()=>{lime.visible=true},6500);
+setTimeout(()=>{dLift.m.visible=false;S.lgf=1;$('fl').style.opacity=.85;shake=.15;groan(120,1.2);S.lm=1;say('*CRASH!* Mr Large Lime Man tears the elevator apart!',3000)},8000);
+setTimeout(()=>say('RAAAAAAGH!',2500,'Mr Large Lime Man'),9000);
+setTimeout(()=>{const o=$('ov');o.style.display='flex';o.style.background='#000';o.onclick=null;o.textContent='GARDEN OF BANAN\nCHAPTER 1 COMPLETE\n\nTo be continued...'},12000)}
+addEventListener('keydown',e=>{K[e.code]=1;if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();if(S.note){if(e.code=='KeyE'||e.code=='Escape')closeNote();return}if(!S.go||S.end)return;if(e.code=='KeyE'&&cur)cur.act();if(e.code=='KeyF')toggleDrone()});
+addEventListener('keyup',e=>K[e.code]=0);
+g.addEventListener('mousedown',()=>{drag=1;if(S.go)try{g.requestPointerLock()}catch(e){}});addEventListener('mouseup',()=>drag=0);
+addEventListener('mousemove',e=>{if(document.pointerLockElement||drag){yaw-=e.movementX*.003;pit=Math.max(-1.4,Math.min(1.4,pit-e.movementY*.003))}});
+// touch controls
+const TJ={x:0,y:0},TOUCH=('ontouchstart' in window)||navigator.maxTouchPoints>0;
+if(TOUCH){document.body.classList.add('tch');const js=$('js'),kn=$('kn');let jid=null;
+const jm=e=>{const r=js.getBoundingClientRect();let dx=e.clientX-(r.left+60),dy=e.clientY-(r.top+60);const d=Math.hypot(dx,dy),m=50;if(d>m){dx*=m/d;dy*=m/d}kn.style.left=40+dx+'px';kn.style.top=40+dy+'px';TJ.x=dx/m;TJ.y=dy/m};
+js.addEventListener('pointerdown',e=>{jid=e.pointerId;js.setPointerCapture(e.pointerId);jm(e);e.preventDefault()});js.addEventListener('pointermove',e=>{if(e.pointerId==jid)jm(e)});
+const je=e=>{if(e.pointerId==jid){jid=null;TJ.x=TJ.y=0;kn.style.left=kn.style.top='40px'}};js.addEventListener('pointerup',je);js.addEventListener('pointercancel',je);
+let lid=null,lx=0,ly=0;g.addEventListener('pointerdown',e=>{if(e.pointerType!='touch')return;lid=e.pointerId;lx=e.clientX;ly=e.clientY});
+g.addEventListener('pointermove',e=>{if(e.pointerType!='touch'||e.pointerId!=lid)return;yaw-=(e.clientX-lx)*.006;pit=Math.max(-1.4,Math.min(1.4,pit-(e.clientY-ly)*.006));lx=e.clientX;ly=e.clientY});g.addEventListener('pointerup',e=>{if(e.pointerId==lid)lid=null});
+const hold=(id,fn,up)=>{const b=$(id);b.addEventListener('pointerdown',e=>{e.preventDefault();fn()});if(up)['pointerup','pointercancel','pointerleave'].forEach(n=>b.addEventListener(n,up))};
+hold('bI',()=>{if(S.note){closeNote();return}if(S.go&&!S.end&&cur)cur.act()});hold('bF',toggleDrone);hold('bJ',()=>K.Space=1,()=>K.Space=0);hold('bD',()=>K.ShiftLeft=1,()=>K.ShiftLeft=0)}
+let last=0;
+function loop(t){requestAnimationFrame(loop);const dt=Math.min((t-last)/1000,.05);last=t;
+if(S.go&&!S.end){const lk=S.ride||S.note,f=Math.max(-1,Math.min(1,(K.KeyW||K.ArrowUp?1:0)-(K.KeyS||K.ArrowDown?1:0)-TJ.y)),s=Math.max(-1,Math.min(1,(K.KeyD?1:0)-(K.KeyA?1:0)+TJ.x));yaw+=((K.ArrowLeft?1:0)-(K.ArrowRight?1:0))*1.8*dt;
+const sp=(S.dr?5:4)*dt,dx=lk?0:(-Math.sin(yaw)*f+Math.cos(yaw)*s)*sp,dz=lk?0:(-Math.cos(yaw)*f-Math.sin(yaw)*s)*sp;
+if(S.dr){mv(Dp,dx,dz,.3);Dp.y=Math.max(.3,Math.min(3.2,Dp.y+((K.Space?1:0)-(K.ShiftLeft?1:0))*3*dt))}else{mv(P,dx,dz,.4);if(K.Space&&P.h==0&&!lk)P.vy=4.5}P.vy-=12*dt;P.h=Math.max(0,P.h+P.vy*dt);if(P.h==0)P.vy=0;
+if(S.ride){S.rt+=dt;const k=Math.min(1,S.rt/6);pad.position.z=17+20.5*k;P.x=22;P.z=pad.position.z;if(k>=1){S.ride=0;S.lifted=1;say('We made it to the other side!',3000,'Tommy')}}
+if(!S.dr&&P.z>42.2&&P.z<49.8&&!(plat.visible&&plat.position.y>-.2&&Math.abs(P.x-20)<2))reset('You fell into the void!');
+if(S.chase&&!S.fell){const e=eg.position,tx=e.z<51?20:P.x,ddx=tx-e.x,ddz=P.z-e.z,d=Math.hypot(ddx,ddz);if(d>.05){e.x+=ddx/d*2.4*dt;e.z+=ddz/d*2.4*dt;eg.rotation.y=Math.atan2(ddx,ddz)}if(Math.hypot(P.x-e.x,P.z-e.z)<1.3)reset('Eggy caught you! Try again.')}
+if(S.elev&&P.z>57.2&&P.x>18.4&&P.x<21.6)ending();
+const A=S.dr?Dp:{x:P.x,y:1.1,z:P.z};cur=null;let bd=1e9;for(const o of IA){if((o.m=='d')!=!!S.dr||!o.ok())continue;const d=Math.hypot(o.x-A.x,o.y-A.y,o.z-A.z);if(d<o.r&&d<bd){bd=d;cur=o}}
+$('pr').textContent=cur&&!S.note?(TOUCH?'✋ ':'[E] ')+cur.t():'';$('bD').style.display=S.dr?'flex':'none';
+$('obj').textContent='Objective: '+obj();$('inv').textContent=(S.dr?'DRONE CAM (F to exit) | ':'')+[S.blue&&!dBlue.open?'Blue key':'',S.pink&&!dPink.open?'Pink key':'',S.purple&&!dPur.open?'Purple key':'',S.yellow&&!dEl.open?'Yellow key':'',S.hammer&&!S.wood?'Hammer':'',S.eggs&&!S.fed?'Eggs '+S.eggs:''].filter(Boolean).join(' | ')}
+if(S.rise){lg.position.y=Math.min(0,lg.position.y+2*dt);if(lg.position.y>=0){S.rise=0;openD(dLift);S.elev=1;say('*DING* The elevator arrived.',2500)}}
+if(S.lgf)lg.position.y-=9*dt;
+for(const d of D)if(d.open&&d.t<3.6){d.t+=3*dt;d.m.position.y=1.75+d.t}
+if(S.fell&&eg.visible){eg.position.y-=12*dt;plat.position.y-=12*dt;if(eg.position.y<-25){eg.visible=false;plat.visible=false}}
+if(S.lm&&lime.position.z<56.3)lime.position.z+=7*dt;
+const sh=shake?(Math.random()-.5)*shake:0;if(S.dr)cam.position.set(Dp.x,Dp.y,Dp.z);else cam.position.set(P.x+sh,1.1+P.h+sh,P.z);
+cam.rotation.set(pit,yaw,0,'YXZ');R.render(sc,cam)}
+requestAnimationFrame(loop);
+// intro cutscene (with voices)
+const L=['Dad pulls up to a big, colorful building...','Dad: Alright Little Tommy, here\'s your kindergarten.\n...I mean preschool!','Tommy: Bye Dad!','Dad: Be good. I\'ll pick you up later!','You are Little Tommy.\nFind a way through the Garden of Banan preschool.\n\nWASD move | Mouse look (click or drag) | Arrow keys turn\nE interact | Space jump | F drone (Space up, Shift down)\nMobile: joystick, drag to look, ✋ interact, 🚁 drone, ⬆️ jump\n\nClick or tap to start'];let li=0;const ov=$('ov');ov.textContent='GARDEN OF BANAN\nChapter 1\n\nClick to begin';
+ov.onclick=()=>{if(li<L.length){const l=L[li++];ov.textContent=l;const m=l.match(/^(Dad|Tommy): ([\s\S]*)/);if(m)voice(m[2].replace(/\n/g,' '),m[1])}else{ov.style.display='none';S.go=1;say('Where am I... this isn\'t kindergarten.',3500,'Tommy');try{g.requestPointerLock()}catch(e){}}};
+</script></body></html>
