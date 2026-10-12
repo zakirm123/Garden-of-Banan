@@ -442,7 +442,7 @@ seq([[100,()=>{say('I SAID GET BACK HERE!',2000,'Banan');mvTo(BN,RX+3,-755,1800,
 [8400,()=>{shake=.3;groan(120,.6);anim(600,k=>{PB.position.x=RX+5.5+k*5;PB.position.y=Math.sin(k*Math.PI)*1.2;PB.rotation.z=k*Math.PI/2})}],
 [9300,()=>{shake=0;mvTo(LM,RX+14,-748,2500,()=>{LM.visible=false;BN.visible=false},true);anim(2500,k=>{BN.rotation.x=0;BN.position.set(LM.position.x-.4,1.8,LM.position.z)})}],
 [11800,()=>{KCR.visible=true;Z.fd=1;S.go=1;say('They left... and a red keycard was left behind!',4000,'Tommy')}]])}
-function endCh3(){S.go=0;P.x=RX;P.z=-772.5;yaw=Math.PI;pit=0;say('The worker lift rumbles to life...',3500);liftRide(RX,-772.5,null,null,0,1,()=>{S.end=1;const o=$('ov');o.onpointerdown=null;o.style.display='flex';o.style.background='#000';o.textContent='GARDEN OF BANAN 3\nCOMPLETE\n\nTo be continued in Chapter 4...'},4200)}
+function endCh3(){S.go=0;P.x=RX;P.z=-772.5;yaw=Math.PI;pit=0;say('The worker lift rumbles to life...',3500);liftRide(RX,-772.5,null,null,0,1,()=>{S.end=1;const o=$('ov');o.style.display='flex';o.style.background='#000';o.textContent='GARDEN OF BANAN 3\nCOMPLETE\n\nTap to start Chapter 4';o.onpointerdown=()=>{o.onpointerdown=null;window.startCh4()}},4200)}
 function obj3(){if(Z.pit<5)return'Pick up the 5 crayons and put them in the pit ('+Z.pit+'/5)'+(Z.hold?' - carrying '+Z.hold:'');if(!Z.pk)return Z.kl?'The Kleaner is inspecting the floor...':'Wait for the Kleaner...';if(!Z.ride1)return'Use the Sector Lift on the east side of the cafeteria';if(!Z.woke)return'Find PB Jelly Man\'s room and press the button';if(!Z.d1)return'...';if(!Z.g1)return'Take the Sector Lift to the Ground Sector (secret room notes '+Z.nr+'/4)';if(!Z.m)return'Ground Sector';if(!Z.mEnd){if(Z.bp)return'BLUE LIGHT! Stand on the mat and DO NOT MOVE!';if(Z.bk)return'Use the blue keycard on the door';if(Z.tk>=4)return'Take the blue keycard';return'Complete everything around the room ('+Z.tk+'/4)'}if(!Z.upDone)return'Follow Bananaleena to the main lobby';if(!Z.pbjS)return'Look for the red keycard';if(Z.run)return'RUN! W = faster, S = slower'+(Z.gap<8?' - BANAN IS CLOSE!':'');if(!Z.fd)return'Watch out!';if(!Z.red)return'Take the red keycard';return'Use the red keycard on the worker lift'}
 function tick3(dt){TT+=dt;for(const a of ANI.slice()){a.t+=dt;const k=Math.min(1,a.t/a.d);a.f(k);if(k>=1){const i=ANI.indexOf(a);if(i>=0)ANI.splice(i,1);a.done&&a.done()}}
 PL3.position.set(P.x,2.6,P.z);FISH.forEach((f,i)=>f.position.y=f.userData.y+Math.sin(TT*2+i)*.12);
@@ -538,5 +538,170 @@ prev=R.render;R.render=(s,c)=>{const n=performance.now(),dt=Math.min((n-_t)/1000
 const o=$('ov');o.onpointerdown=null;o.style.display='flex';o.style.background='#000';o.textContent='CHAPTER 3\nGarden of Banan 3';
 setTimeout(()=>{o.style.display='none';fd.style.opacity=1;liftRide(null,0,-296,-296,Math.PI,-1,()=>{say('*DING*',1500);setTimeout(()=>talk([['Banan',"I'm sorry for hitting you before. I believe we shouldn't talk face-to-face."],['Banan',"Anyway, I locked myself in the surveillance room. Don't even try getting through here."],['Banan',"I know I already said it, but I'm sorry I hit you. PB Jelly Man is in the Aquatic Sector. Go there using the Sector Lift."]]),1600)})},3200)}
 window.startCh3=startCh3;
+})();
+
+// ===================== GARDEN OF BANAN 4 =====================
+(function(){
+Object.assign(VP,{'Sheriff Breadstick':[.5,.85],'Queen Kangaroo':[1.4,.95],'Carroty Jester':[1.9,1.25],'Kittysaurus':[.5,.8],'Nanab':[2,1.3],'Baby Eggy':[2,1.6],'Banan':[1.1,.85],'PB Jelly Man':[.8,.8],'Mr Large Lime Man':[.1,.6]});
+let Y={},CH4=0,TT=0,_t4=performance.now(),prev4=null,PL4=null,DG=null,G={};
+const ANI=[];
+const wl=(...a)=>W(...a,0x5a5f6c);
+const rm=(x0,z0,x1,z1,fc=0x56565f)=>{const w=x1-x0,d=z1-z0,cx=(x0+x1)/2,cz=(z0+z1)/2;pl(w,d,cx,cz,0,fc);pl(w,d,cx,cz,3.5,0x24242c,Math.PI/2)};
+const lamp4=(x,z)=>{const m=new T.Mesh(new T.BoxGeometry(1.6,.08,.6),new T.MeshBasicMaterial({color:0xcfc59a}));m.position.set(x,3.44,z);sc.add(m)};
+const anim=(ms,f,done)=>ANI.push({t:0,d:ms/1000,f,done});
+const wait=(ms,f)=>setTimeout(f,ms);
+const mvTo=(o,x,z,ms,done,face)=>{const a=o.position.x,b=o.position.z;if(face)o.rotation.y=Math.atan2(x-a,z-b);anim(ms,k=>{o.position.x=a+(x-a)*k;o.position.z=b+(z-b)*k},done)};
+const talk=(L,cb)=>{let i=0;const nx=()=>{if(i>=L.length){cb&&cb();return}const e=L[i++];if(e[0]=='!'){e[1]();setTimeout(nx,e[2]||1500);return}const t=e[1];say(t,t.length*70+900,e[0]);setTimeout(nx,t.length*70+1000)};nx()};
+const yn=document.createElement('div');yn.style.cssText='position:absolute;left:0;right:0;bottom:30%;display:none;justify-content:center;gap:20px;z-index:6';document.body.appendChild(yn);
+const choice=(opts,cb)=>{yn.innerHTML='';yn.style.display='flex';S.go=0;opts.forEach((o,i)=>{const b=document.createElement('button');b.textContent=o;b.style.cssText='font:700 22px system-ui;padding:14px 28px;border-radius:12px;border:2px solid #fff;background:#222c;color:#fff';b.onpointerdown=e=>{e.preventDefault();yn.style.display='none';cb(i)};yn.appendChild(b)})};
+const fadeTo=(o,ms,cb)=>{const a=parseFloat(fd.style.opacity)||0;tw(ms,k=>{fd.style.opacity=a+(o-a)*k},cb)};
+const blk=(txt,who,ms,cb)=>{const o=$('ov');o.onpointerdown=null;o.style.display='flex';o.style.background='#000';o.textContent=txt;if(who)voice(txt.replace(/\*/g,''),who);setTimeout(()=>{o.style.display='none';cb&&cb()},ms)};
+const scare=(e,msg,who)=>{const f=$('fl');f.textContent=e;f.style.cssText+=';display:flex;align-items:center;justify-content:center;font-size:45vmin';f.style.background='#f00';f.style.opacity=1;shake=.25;groan(260,.6);if(msg)say(msg,2500,who);setTimeout(()=>{f.style.opacity=0;f.textContent='';shake=0},900)};
+// ---- character models ----
+const A4=(g,geo,c,x,y,z,sx=1,sy=1,sz=1)=>{const m=new T.Mesh(geo,M(c));m.position.set(x,y,z);m.scale.set(sx,sy,sz);g.add(m);return m};
+const SP=r=>new T.SphereGeometry(r,14,10),BX=(w,h,d)=>new T.BoxGeometry(w,h,d),CN=(r,h)=>new T.ConeGeometry(r,h,8),CY=(a,b,h)=>new T.CylinderGeometry(a,b,h,12);
+function mk(k){const g=new T.Group(),a=(...r)=>A4(g,...r);
+if(k=='sheriff'){a(BX(1,1.5,.8),0xd9a15b,0,.95,0);a(SP(.5),0xd9a15b,0,1.75,0,1,.7,.8);a(CY(.85,.85,.08),0x6b3b1b,0,2.05,0);a(CY(.45,.45,.3),0x6b3b1b,0,2.25,0);a(BX(.3,.3,.05),0xffd21f,.3,1.3,.42).rotation.z=.78;eye(g,.2,1.78,.38)}
+else if(k=='queen'){a(SP(.6),0xb87f4a,0,1.1,0,1,1.5,1);a(SP(.4),0xb87f4a,0,2.15,0);a(CN(.12,.7),0xb87f4a,-.25,2.75,0);a(CN(.12,.7),0xb87f4a,.25,2.75,0);a(CY(.3,.36,.25),0xffd21f,0,2.6,0);a(BX(.7,.5,.2),0xd9b184,0,.9,.55);a(BX(.3,.3,1),0xb87f4a,0,.4,-.8);eye(g,.15,2.2,.34,.07)}
+else if(k=='jester'){a(CN(.6,1.7),0xff8a1f,0,1.1,0).rotation.x=Math.PI;[-.25,0,.25].forEach((x,i)=>{a(CN(.12,.7),0x2faa2f,x,2.3+(i==1?.15:0),0);a(SP(.07),0xffd21f,x,2.7+(i==1?.15:0),0)});eye(g,.16,1.55,.4,.08);a(BX(.15,.7,.15),0xff8a1f,-.7,1.2,0);a(BX(.15,.7,.15),0xff8a1f,.7,1.2,0)}
+else if(k=='kitty'){a(SP(.9),0x9b6bd1,0,1.2,0,1,.9,1.5);a(SP(.6),0x9b6bd1,0,2,1.3);a(CN(.2,.5),0x9b6bd1,-.35,2.65,1.2);a(CN(.2,.5),0x9b6bd1,.35,2.65,1.2);a(SP(.3),0xd9b9ff,0,1.85,1.8,1,.7,1);a(BX(.35,.35,1.6),0x9b6bd1,0,1,-1.6);a(CY(.2,.25,.9),0x7d4fb5,-.5,.45,.5);a(CY(.2,.25,.9),0x7d4fb5,.5,.45,.5);a(BX(.15,.5,.15),0xffffff,-.2,1.65,2.05);a(BX(.15,.5,.15),0xffffff,.2,1.65,2.05);eye(g,.25,2.2,1.65,.08)}
+else if(k=='nanab'){a(SP(.35),0xffd21f,0,.55,0);for(let i=0;i<8;i++){const th=i*.785;a(BX(.06,.06,.7),0x222222,Math.cos(th)*.4,.3,Math.sin(th)*.4).rotation.y=Math.PI/2-th}eye(g,.12,.65,.3,.06)}
+else if(k=='train'){a(BX(10,2.2,2.4),0x7a3a8a,0,1.6,0);a(SP(1.1),0x7a3a8a,5,1.7,0);for(let i=0;i<4;i++)[-1,1].forEach(s=>{a(BX(.2,.2,2.2),0x222222,-3.5+i*2.4,.9,s*1.8).rotation.x=s*.6});[-.4,.4].forEach(z=>a(SP(.2),0xff2020,5.8,2,z))}
+return g}
+// ---- helper scenes ----
+function fall(){S.go=0;Y.s=4;say('I touched it... wait, why is the floor shaking?!',2400,'Tommy');shake=.1;wait(1800,()=>{say('Aaaah! I am falling!',1800,'Tommy');fadeTo(1,1200,()=>{shake=0;blk('*Something is dragging me...*','Tommy',3200,()=>{P.x=70;P.z=-26;yaw=0;pit=0;Y.s=5;Y.hold=0;fadeTo(0,900,interrogate)})})})}
+const QL=["Have you seen this mascot? 🦖 KITTYSAURUS","Have you seen this mascot? 🥕 CARROTY JESTER","Have you seen this mascot? 🦘 QUEEN KANGAROO","Have you seen this spider? Its official name is NANAB. 🕷️","Have you seen this mascot? 🍞 ...Me. SHERIFF BREADSTICK."];
+function interrogate(){talk([['Sheriff Breadstick',"Listen up, kid criminal. Stop trying to act like you're dizzy."],['Sheriff Breadstick',"Answer these questions by clicking the YES or NO button."]],()=>askQ(0))}
+function askQ(i){if(i>=QL.length){talk([['Sheriff Breadstick',"Hmph. Fine. You can go. Grab your belongings: your drone and your remote."],['Sheriff Breadstick',"Then we head to the Kingdom."]],()=>{S.go=1;Y.s=6});return}
+say(QL[i],99999,'Sheriff Breadstick');choice(['YES','NO'],a=>{say("You said "+(a?'NO':'YES')+". Interesting...",2200,'Sheriff Breadstick');wait(2400,()=>askQ(i+1))})}
+function chkBel(){if(Y.g1&&Y.g2){S.remote=1;Y.s=7;S.go=0;talk([['Sheriff Breadstick',"Good. Now let's head to the Kingdom."],['Sheriff Breadstick',"I will be right behind you, kid."]],()=>{openD(G.dI);Y.shF=1;S.go=1;say('(Press F to use your drone)',3000)})}else say('Got it.',1200,'Tommy')}
+function throne(){Y.s=7.5;Y.shF=0;S.go=0;const sh=G.sh;sh.position.set(144,0,-46);sh.rotation.y=Math.PI*.85;
+talk([['Queen Kangaroo',"Oh, are you done with this kid here, Sheriff?"],['Sheriff Breadstick',"Yes, Your Majesty. I think this kid came from the surface."],['Queen Kangaroo',"The surface? What is your name, child?"]],()=>choice(['Little Tommy'],()=>{say('Little Tommy.',1800,'Tommy');wait(2000,()=>talk([['Queen Kangaroo',"Well, Tommy, I know why you are here. But we need 3 elevator parts to fix the worker lift."],['Queen Kangaroo',"For now, there are 5 visitors. I say 5 because your friend came too. You should meet him in the infirmary."]],()=>{S.go=1;Y.s=8}))}))}
+function banTalk(){if(Y.s==8){S.go=0;talk([['Banan',"When the Queen mentioned having so many visitors in one day, I knew one of them had to be you, Tommy."],['Banan',"Listen, I need to rest for a while. Go to the train station, or go to the locked up Jelly Man."]],()=>{S.go=1;Y.s=9})}
+else if(Y.partRoom&&!Y.partBanan){S.go=0;talk([['Banan',"You found one? Here, take mine. It is an elevator part."],['Banan',"Now go back to the Kingdom. I will rest a little longer."]],()=>{Y.partBanan=1;Y.parts++;Y.s=17;S.go=1;say('Elevator part! ('+Y.parts+'/3)',2500,'Tommy')})}
+else say('Zzz... *snore*',2000,'Banan')}
+function pbjTalk(){S.go=0;talk([['PB Jelly Man',"Oh... it's you. Don't worry, I'm unable to hurt you."],['PB Jelly Man',"Finally, after managing to keep Large Lime in control, you have to come around and ruin it."],['PB Jelly Man',"Anyway, I have a dream to show you. Sure looks like you need it."]],dream)}
+function dream(){fadeTo(1,800,()=>{DG.visible=true;sc.background=new T.Color(0x120a1e);sc.fog=new T.Fog(0x120a1e,6,40);P.x=420;P.z=-32;yaw=0;pit=0;Y.s=10;Y.dm=1;fadeTo(0,800,()=>talk([['Banan',"Hello, sleepy Tommy. Grab some of the vegetables from the tray and eat them."]],()=>{S.go=1;Y.s=11}))})}
+function vegTaken(){S.go=0;Y.veg=1;say('Crunch crunch... tastes weird.',2000,'Tommy');wait(2200,()=>mvTo(G.nanab,418.8,-33.8,1500,()=>{G.brc.visible=true;talk([['Nanab',"Here. Broccoli. Eat up."],['PB Jelly Man',"I've never witnessed a kindness coming from a spider."]],()=>{S.go=1;say('Look around the camp. Is something shiny back there?',4000,'Tommy');wait(14000,trainEvt)})},true))}
+function trainEvt(){if(Y.s!=11)return;S.go=0;Y.s=11.5;const t=G.train,b=G.dBan;say('What is that sound?',1800,'Banan');wait(1600,()=>{groan(100,1.5);anim(900,k=>{t.position.x=480-k*54},()=>{say('HELP ME!',2500,'Banan');shake=.2;anim(1200,k=>{t.position.x=426-k*54;b.position.x=424-k*54;b.position.y=k*.8},()=>{const f=$('fl');f.style.background='#fff';f.style.opacity=1;groan(300,.8);shake=.3;wait(900,()=>{f.style.opacity=0;f.style.background='#f00';wakeKitty()})})})})}
+function wakeKitty(){shake=0;fadeTo(1,500,()=>{DG.visible=false;Y.dm=0;sc.background=new T.Color(0x05050a);sc.fog=new T.Fog(0x05050a,3,26);P.x=218;P.z=-58;yaw=Math.PI;pit=0;Y.s=12;G.kit.st='idle';G.kit.t=0;G.kit.m.position.set(218,0,-36);fadeTo(0,800,()=>{say('Ugh... where am I? Is that a dinosaur... cat?!',3500,'Tommy');wait(3600,()=>{say('Stand in front of the red button, then dodge when it charges!',5000);S.go=1})})})}
+function kitSuccess(){Y.s=13;const k=G.kit;k.st='done';k.m.position.set(218,0,-67);G.cage.position.set(218,1.8,-67);G.cage.visible=true;shake=.3;groan(80,.8);openD(G.dKit);openD(G.dLr1);wait(500,()=>{shake=0});say('Kittysaurus rammed the button and got caught in the trap!',4000,'Tommy')}
+function lockTrap(){Y.s=14;S.go=0;const d=G.dLr1;d.open=0;d.t=0;d.m.position.y=1.75;d.col.on=1;groan(100,.6);const J=G.jes;J.visible=true;J.position.set(246,0,-44);J.rotation.y=Math.PI;
+talk([['!',()=>say('*CLANG!* The doors locked!',1600),1700],['Carroty Jester',"Hahahahahaha! I really thought the kitty dinosaur would finish you off, but I guess not."],['Carroty Jester',"Try to get out!"]],()=>{J.visible=false;S.go=1;say('There is a vent up high. My drone can fit! (Press F)',4500,'Tommy')})}
+function finale(){Y.s=17.5;S.go=0;Y.shF=0;const J=G.jes,Q=G.queen,sh=G.sh,ck=G.chick,k2=G.kit2;sh.position.set(147,0,-44);sh.rotation.y=-Math.PI*.7;J.visible=true;J.position.set(131,0,-24);ck.visible=true;ck.position.set(128,.25,-26);ck.scale.setScalar(.4);
+mvTo(J,138,-45,2800,()=>talk([['Carroty Jester',"I will make you laugh, Your Majesty! I am built to tell jokes!"]],()=>{anim(700,k=>{Q.position.y=Math.sin(k*Math.PI)*1.5});say('Eek! The Jester?!',1800,'Queen Kangaroo');wait(1400,chickSeq)}),true);
+function chickSeq(){say('Peep! Peep!',1500,'Baby Eggy');mvTo(ck,126,-34,1800,()=>{ck.visible=false;G.goo.material=M(0x66ff99);shake=.1;groan(150,.8);wait(1100,()=>{shake=0;ck.visible=true;ck.scale.setScalar(1.3);anim(800,k=>{ck.position.set(126+k*4,.25+Math.sin(k*Math.PI)*3,-34)},()=>{k2.visible=true;k2.position.set(152,0,-28);groan(120,.8);say('GRRRR!',1500,'Kittysaurus');mvTo(k2,143,-33,1400,()=>mvTo(ck,139,-34,500,()=>{shake=.25;groan(200,.4);anim(900,k=>{ck.position.y=.25+Math.abs(Math.sin(k*9))*1.2;k2.position.x=143+Math.sin(k*12)*.4},()=>{shake=0;mvTo(k2,158,-24,1200,()=>{k2.visible=false;jokeSeq()},true)})},true),true)})})},true)}
+function jokeSeq(){talk([['Carroty Jester',"Why did the Kitty-Rex cross the road? To get to the other cat-side! Hehehe!"],['Queen Kangaroo',"HAHAHAHA! Oh my, that is a good one!"],['Sheriff Breadstick',"GO TO THE ELEVATOR NOW! I HAVE ALL OF THE ELEVATOR PARTS, BUT THE ELEVATOR CAN GO DOWN, NOT UP. WE NEED TO GET OUT OF THIS FLOOR IMMEDIATELY!"]],()=>{Y.s=18;S.go=1})}}
+function endLift(){Y.s=19;S.go=0;P.x=154;P.z=-56;yaw=Math.PI;say('Going down...',2500,'Tommy');liftRide(154,-56,null,null,0,-1,finalText,3000)}
+function finalText(){const o=$('ov');o.onpointerdown=null;o.style.display='flex';o.style.background='#000';const L=["Everything we worked so hard for was all wasted...","I have managed to let all of the monsters out of their cage, and brought Peanut Butter Jelly Man with us. He can be useful someday."];let i=0;const nx=()=>{if(i<L.length){o.textContent='Sheriff Breadstick:\n\n'+L[i];voice(L[i],'Sheriff Breadstick');wait(L[i++].length*65+1800,nx)}else{o.textContent='GARDEN OF BANAN 4\nCOMPLETE\n\nTo be continued in Chapter 5...';S.end=1}};nx()}
+function obj4(){const s=Y.s;if(s==1)return'Pick up the baby chick';if(s==2)return'RUN! Escape Mr Large Lime Man!';if(s==3)return Y.dropped?'Touch the yellow drone remote':'Drop the baby chick';if(s==5)return"Answer the Sheriff's questions";if(s==6)return'Grab your drone and remote ('+((Y.g1?1:0)+(Y.g2?1:0))+'/2)';if(s==7)return'Walk east to the Kingdom (the Sheriff follows)';if(s==8)return'Meet your friend in the infirmary';if(s==9)return'Visit the locked up Jelly Man (or look around the train station)';if(s==11)return Y.veg?'Explore the camp... something shiny?':'Take a vegetable from the tray';if(s==12)return'Make Kittysaurus charge into the red button! Stand in front of it, then dodge!';if(s==13)return'Go east through the open door';if(s==14)return'Locked in! Press F, fly the drone through the vent, press the red button outside';if(s==15)return'Find the elevator part in the next room';if(s==16)return"Get Banan's elevator part in the infirmary";if(s==17)return'Go to the Kingdom throne room';if(s==18)return'GO TO THE ELEVATOR!';return'...'}
+function tick4(dt){TT+=dt;PL4.position.set(S.dr?Dp.x:P.x,2.6,S.dr?Dp.z:P.z);
+for(const a of ANI.slice()){a.t+=dt;const k=Math.min(1,a.t/a.d);a.f(k);if(k>=1){const i=ANI.indexOf(a);if(i>=0)ANI.splice(i,1);a.done&&a.done()}}
+if(Y.hold){const fx=-Math.sin(yaw),fz=-Math.cos(yaw),rx=Math.cos(yaw),rz=-Math.sin(yaw);G.chick.position.set(P.x+fx*.9-rx*.4,.55+P.h,P.z+fz*.9-rz*.4);G.chick.rotation.y=yaw}
+if(Y.dm){const dx=P.x-420,dz=P.z+40,d=Math.hypot(dx,dz);if(d>15){P.x=420+dx/d*15;P.z=-40+dz/d*15}G.flame.scale.y=1+Math.sin(TT*12)*.15}
+if(!S.go||S.end)return;
+// lime chase
+if(Y.s==2||Y.s==3){const l=G.lm,tx=Y.s==2?P.x:0,tz=Y.s==2?P.z:-43.6,dx=tx-l.position.x,dz=tz-l.position.z,d=Math.hypot(dx,dz);if(d>.3){l.position.x+=dx/d*3.7*dt;l.position.z+=dz/d*3.7*dt;l.rotation.y=Math.atan2(dx,dz);l.position.y=Math.abs(Math.sin(TT*6))*.15}
+if(Y.s==2&&d<1.7){scare('👹','Mr Large Lime Man caught you!','Mr Large Lime Man');P.x=0;P.z=-122;yaw=Math.PI;l.position.set(0,0,-138)}
+if(Y.s==2&&P.z>-38.5&&Math.abs(P.x)<3){Y.s=3;const d2=G.dS;d2.open=0;d2.t=0;d2.m.position.y=1.75;d2.col.on=1;groan(90,1);say('The door shut! He is too big to fit... phew. I should put this chick down.',5000,'Tommy')}}
+// sheriff follows
+if(Y.shF){const s=G.sh,dx=P.x-s.position.x,dz=P.z-s.position.z,d=Math.hypot(dx,dz);if(d>3.5){s.position.x+=dx/d*3.6*dt;s.position.z+=dz/d*3.6*dt}s.rotation.y=Math.atan2(dx,dz)}
+if(Y.s==7&&P.x>124&&P.z<-30)throne();
+// kittysaurus
+if(Y.s==12){const k=G.kit,m=k.m;k.t+=dt;const dx=P.x-m.position.x,dz=P.z-m.position.z,d=Math.hypot(dx,dz)||1;
+if(k.st=='idle'){m.rotation.y=Math.atan2(dx,dz);if(d>15){m.position.x+=dx/d*2*dt;m.position.z+=dz/d*2*dt}m.position.x=Math.max(203,Math.min(233,m.position.x));m.position.z=Math.max(-67,Math.min(-32,m.position.z));if(k.t>3.2){k.st='aim';k.t=0;groan(120,.8);say('GRRRRR!',1200,'Kittysaurus')}}
+else if(k.st=='aim'){m.rotation.y=Math.atan2(dx,dz);m.position.y=Math.sin(TT*40)*.05;if(k.t>1.3){k.st='charge';k.t=0;k.dx=dx/d;k.dz=dz/d;m.position.y=0}}
+else if(k.st=='charge'){m.position.x+=k.dx*13*dt;m.position.z+=k.dz*13*dt;m.rotation.y=Math.atan2(k.dx,k.dz);
+if(Math.hypot(P.x-m.position.x,P.z-m.position.z)<1.9){scare('🦖','Kittysaurus got you!','Kittysaurus');P.x=218;P.z=-58;yaw=Math.PI;m.position.set(218,0,-36);k.st='idle';k.t=0}
+else if(m.position.z<=-67||m.position.x<203||m.position.x>233||m.position.z>-32){if(m.position.z<=-67&&Math.abs(m.position.x-218)<2.6)kitSuccess();else{k.st='stun';k.t=0;shake=.15;groan(90,.4);wait(400,()=>shake=0)}}}
+else if(k.st=='stun'){m.rotation.z=Math.sin(TT*10)*.1;if(k.t>2.5){m.rotation.z=0;k.st='idle';k.t=0}}}
+if(Y.s==13&&P.x>240&&P.z>-58&&P.z<-36)lockTrap();
+if(Y.s==17&&P.x>124&&P.x<156&&P.z>-56&&P.z<-26)finale();
+if(Y.s==18&&Math.abs(P.x-154)<1.1&&Math.abs(P.z+56)<1.1)endLift()}
+function build4(){
+G={};DG=new T.Group();DG.visible=false;sc.add(DG);
+const dgm=(geo,c,x,y,z)=>{const m=new T.Mesh(geo,M(c));m.position.set(x,y,z);DG.add(m);return m};
+// A: arrival, hall, safe room
+rm(-10,-140,10,-110);[[-10,-140,-10,-110],[10,-140,10,-110],[-10,-140,10,-140],[-10,-110,-3,-110],[3,-110,10,-110]].forEach(a=>wl(...a));
+mkLift(0,-134,'WORKER LIFT');lamp4(0,-125);lamp4(-6,-135);
+rm(-3,-110,3,-40);wl(-3,-110,-3,-40);wl(3,-110,3,-40);for(let z=-105;z>-45;z-=15)lamp4(0,z);
+rm(-8,-40,8,-10);[[-8,-40,-3,-40],[3,-40,8,-40],[-8,-10,8,-10],[-8,-40,-8,-10],[8,-40,8,-10]].forEach(a=>wl(...a));lamp4(0,-25);
+G.dS=door(0,-40,6,'z',0x777788);openD(G.dS);
+G.chick=ch('egg',0xffe86b).g;G.chick.scale.setScalar(.4);G.chick.position.set(4,.25,-122);sc.add(G.chick);
+G.lm=ch('lime',0x6bd13a).g;G.lm.scale.setScalar(1.8);G.lm.visible=false;sc.add(G.lm);
+ia(4,.4,-122,2.4,'p',()=>Y.s==1,()=>'Pick up the baby chick',()=>{Y.s=2;Y.hold=1;G.lm.visible=true;G.lm.position.set(0,0,-138);groan(70,1.5);say('A baby Eggy Bird! Peep peep... uh oh. Is that Mr Large Lime Man?!',4500,'Tommy')});
+const dsp=new T.Mesh(new T.CylinderGeometry(1,1,.04,20),M(0xffd21f));dsp.position.set(-4,.03,-25);sc.add(dsp);
+ia(-4,.2,-25,2.6,'p',()=>Y.s==3&&Y.hold&&!Y.dropped,()=>'Drop the baby chick',()=>{Y.hold=0;Y.dropped=1;G.chick.position.set(-4,.25,-25);G.chick.rotation.y=0;say('Stay here, little guy. I will be right back.',3000,'Tommy')});
+bx(1,.9,1,4,.45,-25,0x555566);bx(.4,.08,.7,4,.94,-25,0xffd21f);tp('DRONE REMOTE',2,.4,4,2.2,-39.7,0,'#222','#ffd21f',30);
+ia(4,1,-25,2.4,'p',()=>Y.dropped&&Y.s==3,()=>'Touch the yellow drone remote',fall);
+// B: interrogation room
+rm(60,-60,80,-20,0x6a5a4a);[[60,-60,80,-60],[60,-20,80,-20],[60,-60,60,-20],[80,-60,80,-50],[80,-44,80,-20]].forEach(a=>wl(...a));lamp4(70,-35);lamp4(70,-50);
+G.dI=door(80,-47,6,'x',0x777788);tp('WANTED\nKID CRIMINAL',3,1.8,70,2,-59.8,0,'#d8c7a0','#7a1c1c');
+bx(4,.9,1.2,70,.45,-44,0x6b4a2a);G.sh=mk('sheriff');G.sh.position.set(70,0,-46.5);sc.add(G.sh);
+const bd=bx(.4,.12,.4,66,.96,-44,0x222222),br=bx(.5,.1,.3,74,.95,-44,0xffd21f);
+ia(66,1,-44,2.4,'p',()=>Y.s==6&&!Y.g1,()=>'Take your drone',()=>{Y.g1=1;bd.visible=false;chkBel()});
+ia(74,1,-44,2.4,'p',()=>Y.s==6&&!Y.g2,()=>'Take your drone remote',()=>{Y.g2=1;br.visible=false;chkBel()});
+// corridor + throne room
+rm(80,-50,120,-44);wl(80,-50,120,-50);wl(80,-44,120,-44);[90,105].forEach(x=>lamp4(x,-47));
+rm(120,-60,160,-20,0x7a5a3a);[[120,-60,160,-60],[120,-60,120,-50],[120,-44,120,-20],[160,-60,160,-50],[160,-44,160,-20],[120,-20,138,-20],[142,-20,160,-20]].forEach(a=>wl(...a));
+pl(4,34,140,-40,.02,0x8a1c2a);bx(2,.5,2,140,.25,-55);bx(2,2.4,.4,140,1.4,-56.5,0xffd21f);G.queen=mk('queen');G.queen.position.set(140,.5,-54.5);sc.add(G.queen);
+tp('THE KINGDOM',4,1,140,3,-59.8,0,'#5a1020','#ffd21f',44);[[130,-40],[150,-40],[140,-30]].forEach(([x,z])=>lamp4(x,z));
+G.jes=mk('jester');G.jes.visible=false;sc.add(G.jes);G.kit2=mk('kitty');G.kit2.scale.setScalar(1.5);G.kit2.visible=false;sc.add(G.kit2);
+const pot=new T.Group();A4(pot,CY(.9,1.1,1.2),0x3a2a22,0,.6,0);G.goo=A4(pot,CY(.8,.8,.05),0xa86a2a,0,1.2,0);pot.position.set(126,0,-36);sc.add(pot);tp('PB JELLY DNA',1.8,.4,126,1.8,-36,0,'#222','#ffd21f',28);
+mkLift(154,-56,'ELEVATOR');
+// infirmary
+rm(160,-60,185,-30,0xb8d0d0);[[160,-60,185,-60],[160,-30,185,-30],[185,-60,185,-50],[185,-44,185,-30]].forEach(a=>wl(...a));lamp4(172,-45);bx(2.4,.5,1.2,176,.25,-54,0xffffff);
+const bi=ch('banan',0xe23030).g;bi.position.set(176,.75,-54);bi.rotation.z=Math.PI/2;bi.scale.setScalar(.9);sc.add(bi);tp('INFIRMARY',2.4,.6,172,2.8,-59.8,0,'#fff','#c22');
+ia(176,1,-52,3.2,'p',()=>Y.s>=8,()=>(Y.partRoom&&!Y.partBanan)?'Talk to Banan (elevator part)':'Talk to Banan',banTalk);
+rm(185,-50,200,-44);wl(185,-50,200,-50);wl(185,-44,200,-44);
+// station + PBJ cell
+rm(120,-20,160,8,0x4a4a55);[[120,-20,120,8],[120,8,160,8],[160,-20,160,-6],[160,0,160,8]].forEach(a=>wl(...a));lamp4(140,-8);lamp4(140,2);tp('TRAIN STATION',3.4,.8,140,3,7.7,Math.PI,'#222','#ffd21f',36);
+G.stTrain=mk('train');G.stTrain.position.set(141,0,3);sc.add(G.stTrain);
+ia(141,1,-1,4,'p',()=>Y.s>=9,()=>'Look at the spider train',()=>say('A train shaped like a giant spider... Nanab must be driving it.',3500,'Tommy'));
+rm(160,-20,185,8,0x3a3a44);[[160,-20,185,-20],[185,-20,185,8],[160,8,185,8]].forEach(a=>wl(...a));lamp4(172,-5);lamp4(180,-5);
+for(let z=-19;z<8;z+=1.3){const b=new T.Mesh(new T.CylinderGeometry(.05,.05,3.4,6),M(0x9aa0a6));b.position.set(175,1.7,z);sc.add(b)}C.push({x0:174.8,x1:175.2,z0:-20,z1:8,on:1});
+const pb=ch('pbj',0x8b5a2b).g;pb.scale.setScalar(1.6);pb.position.set(180,0,-6);pb.rotation.y=-Math.PI/2;sc.add(pb);
+ia(172,1,-6,3.4,'p',()=>Y.s==9,()=>'Talk to Peanut Butter Jelly Man',pbjTalk);
+// Kittysaurus room, locked room, vent + button, part room
+rm(200,-70,236,-30,0x4a3a5a);[[200,-70,236,-70],[200,-30,236,-30],[200,-70,200,-50],[200,-44,200,-30],[236,-70,236,-50],[236,-44,236,-30]].forEach(a=>wl(...a));
+G.dKit=door(200,-47,6,'x',0x777788);G.dLr1=door(236,-47,6,'x',0x777788);[[210,-45],[226,-45],[218,-60]].forEach(([x,z])=>lamp4(x,z));
+bx(1.6,1.6,.2,218,1.8,-69.8,0x333344);const rbn=new T.Mesh(new T.CylinderGeometry(.4,.4,.15,16),M(0xff0000));rbn.rotation.x=Math.PI/2;rbn.position.set(218,1.8,-69.6);sc.add(rbn);tp('DO NOT PRESS',2.4,.5,218,3,-69.8,0,'#400','#f66',32);
+G.cage=new T.Mesh(new T.BoxGeometry(4,3.6,4),new T.MeshLambertMaterial({color:0x99aabb,transparent:true,opacity:.35}));G.cage.visible=false;sc.add(G.cage);
+G.kit={m:mk('kitty'),st:'idle',t:0,dx:0,dz:0};G.kit.m.scale.setScalar(1.5);G.kit.m.position.set(218,0,-36);sc.add(G.kit.m);
+rm(236,-58,252,-36,0x55484a);[[236,-58,252,-58],[236,-36,252,-36],[252,-58,252,-50],[252,-44,252,-36]].forEach(a=>wl(...a));G.dEx=door(252,-47,6,'x',0x777788);lamp4(244,-47);
+bx(.1,.9,1.4,251.8,2.6,-54,0x222222);tp('VENT',1.2,.4,251.6,3.2,-54,-Math.PI/2,'#222','#aaa',30);
+ia(250.5,2.6,-54,3,'d',()=>Y.s==14,()=>'Fly through the vent',()=>{Dp.x=254;Dp.z=-54;Dp.y=2.4;say('The drone squeezed through! Now find the button.',3500,'Tommy')});
+rm(252,-58,270,-36);wl(252,-58,270,-58);wl(252,-36,270,-36);wl(270,-58,270,-52);wl(270,-46,270,-36);lamp4(262,-47);
+bx(1.4,1.4,.2,262,2.4,-36.4,0x333344);const ob=new T.Mesh(new T.CylinderGeometry(.3,.3,.12,14),M(0xff0000));ob.rotation.x=Math.PI/2;ob.position.set(262,2.4,-36.55);sc.add(ob);
+ia(262,2.4,-37,2.8,'d',()=>Y.s==14,()=>'Press the red button',()=>{Y.s=15;openD(G.dEx);openD(G.dLr1);groan(80,.8);say('Click! The door unlocked. (Press F to bring the drone back)',4500,'Tommy')});
+rm(270,-58,286,-36,0x30303a);[[270,-58,286,-58],[270,-36,286,-36],[286,-58,286,-36]].forEach(a=>wl(...a));lamp4(278,-47);
+const prt=new T.Group();A4(prt,CY(.55,.55,.2),0xb0b6bd,0,0,0).rotation.x=Math.PI/2;for(let i=0;i<8;i++){const th=i*.785;A4(prt,BX(.2,.25,.2),0xb0b6bd,Math.cos(th)*.65,Math.sin(th)*.65,0)}prt.position.set(282,1,-47);sc.add(prt);
+ia(282,1,-47,2.4,'p',()=>Y.s==15&&!Y.partRoom,()=>'Take the elevator part',()=>{Y.partRoom=1;Y.parts++;prt.visible=false;Y.s=16;say('An elevator part! ('+Y.parts+'/3)',3000,'Tommy')});
+// dream (campfire)
+const gnd=new T.Mesh(new T.PlaneGeometry(80,80),M(0x2a3a22));gnd.rotation.x=-Math.PI/2;gnd.position.set(420,0,-40);DG.add(gnd);
+[0,1,2].forEach(i=>{const l=dgm(CY(.12,.12,1.5),0x5a3a1a,420,.15,-40);l.rotation.z=Math.PI/2;l.rotation.y=i*1.05});
+G.flame=dgm(CN(.5,1.3),0xff7a1f,420,.8,-40);dgm(CN(.3,.9),0xffd21f,420,.6,-40);const fl=new T.PointLight(0xff8a2a,1.6,26);fl.position.set(420,1.5,-40);DG.add(fl);
+for(let i=0;i<9;i++){const a=i/9*6.283,x=420+Math.cos(a)*17,z=-40+Math.sin(a)*17;dgm(CY(.4,.5,5),0x4a3220,x,2.5,z);dgm(SP(2.2),0x1f5a2a,x,6,z)}
+dgm(CY(.45,.55,5),0x4a3220,430,2.5,-52);dgm(SP(2.2),0x1f5a2a,430,6,-52);
+G.dBan=ch('banan',0xe23030).g;G.dBan.scale.setScalar(.9);G.dBan.position.set(424,0,-40);G.dBan.rotation.y=-Math.PI/2;DG.add(G.dBan);
+G.nanab=mk('nanab');G.nanab.position.set(415,0,-44);DG.add(G.nanab);
+const dpb=ch('pbj',0x8b5a2b).g;dpb.position.set(420,0,-47);DG.add(dpb);
+dgm(CY(.6,.6,.6),0x6b4a2a,418,.3,-35);dgm(BX(1.4,.1,.9),0x7a5a3a,418,.65,-35);[0xff8a1f,0xe23030,0xffd21f].forEach((c,i)=>dgm(BX(.3,.3,.3),c,417.5+i*.5,.85,-35));
+G.brc=dgm(SP(.25),0x2faa2f,421,.3,-33);G.brc.visible=false;
+G.train=mk('train');G.train.position.set(480,0,-40);DG.add(G.train);
+const dpart=new T.Group();A4(dpart,CY(.5,.5,.2),0xd0d6dd,0,0,0).rotation.x=Math.PI/2;for(let i=0;i<8;i++){const th=i*.785;A4(dpart,BX(.18,.22,.18),0xd0d6dd,Math.cos(th)*.6,Math.sin(th)*.6,0)}dpart.position.set(428.2,.8,-51);DG.add(dpart);
+ia(420,.8,-35,2.6,'p',()=>Y.s==11&&!Y.veg,()=>'Take a vegetable',vegTaken);
+ia(428.2,.8,-51,2.6,'p',()=>Y.dm&&!Y.partDream,()=>'Take the shiny elevator part',()=>{Y.partDream=1;Y.parts++;dpart.visible=false;say('A hidden elevator part! ('+Y.parts+'/3)',3000,'Tommy')})}
+function startCh4(){CH4=1;while(sc.children.length)sc.remove(sc.children[0]);C.length=0;D.length=0;IA.length=0;LIFTS.length=0;ANI.length=0;LY=0;
+Y={s:0,hold:0,parts:0};cam.far=600;cam.updateProjectionMatrix();
+sc.background=new T.Color(0x05050a);sc.fog=new T.Fog(0x05050a,3,26);PL4=new T.PointLight(0xfff2d8,1.1,18);sc.add(new T.AmbientLight(0xffffff,.38),PL4);
+Object.assign(S,{go:0,end:0,note:0,dr:0,remote:0,launched:0,chase:0,rise:0,lgf:0,lm:0,ride:0,elev:0,fell:1});eg.visible=false;lime.visible=false;
+$('fl').style.opacity=0;shake=0;build4();
+prev4=T.WebGLRenderer.prototype.render.bind(R);
+R.render=(s,c)=>{const n=performance.now(),dt=Math.min((n-_t4)/1000,.05);_t4=n;tick4(dt);c.position.y+=LY;prev4(s,c);$('obj').textContent='Objective: '+obj4();$('inv').textContent=(S.remote?'Drone | ':'')+'Elevator parts '+Y.parts+'/3'};
+const o=$('ov');o.onpointerdown=null;o.style.display='flex';o.style.background='#000';o.textContent='CHAPTER 4\nGarden of Banan 4';
+fd.style.opacity=1;
+wait(3200,()=>{o.style.display='none';liftRide(null,0,0,-134,Math.PI,1,()=>{Y.s=1;say('We made it up. What is that peeping sound?',4000,'Tommy')})})}
+window.startCh4=startCh4;
 })();
 </script></body></html>
