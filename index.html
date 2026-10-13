@@ -543,6 +543,7 @@ window.startCh3=startCh3;
 
 // ===================== GARDEN OF BANAN 4 =====================
 (function(){
+window.MK=mk;
 Object.assign(VP,{'Sheriff Breadstick':[.5,.85],'Queen Kangaroo':[1.4,.95],'Carroty Jester':[1.9,1.25],'Kittysaurus':[.5,.8],'Nanab':[2,1.3],'Baby Eggy':[2,1.6],'Banan':[1.1,.85],'PB Jelly Man':[.8,.8],'Mr Large Lime Man':[.1,.6]});
 let Y={},CH4=0,TT=0,_t4=performance.now(),prev4=null,PL4=null,DG=null,G={};
 const ANI=[];
@@ -594,7 +595,7 @@ mvTo(J,138,-45,2800,()=>talk([['Carroty Jester',"I will make you laugh, Your Maj
 function chickSeq(){say('Peep! Peep!',1500,'Baby Eggy');mvTo(ck,126,-34,1800,()=>{ck.visible=false;G.goo.material=M(0x66ff99);shake=.1;groan(150,.8);wait(1100,()=>{shake=0;ck.visible=true;ck.scale.setScalar(1.3);anim(800,k=>{ck.position.set(126+k*4,.25+Math.sin(k*Math.PI)*3,-34)},()=>{k2.visible=true;k2.position.set(152,0,-28);groan(120,.8);say('GRRRR!',1500,'Kittysaurus');mvTo(k2,143,-33,1400,()=>mvTo(ck,139,-34,500,()=>{shake=.25;groan(200,.4);anim(900,k=>{ck.position.y=.25+Math.abs(Math.sin(k*9))*1.2;k2.position.x=143+Math.sin(k*12)*.4},()=>{shake=0;mvTo(k2,158,-24,1200,()=>{k2.visible=false;jokeSeq()},true)})},true),true)})})},true)}
 function jokeSeq(){talk([['Carroty Jester',"Why did the Kitty-Rex cross the road? To get to the other cat-side! Hehehe!"],['Queen Kangaroo',"HAHAHAHA! Oh my, that is a good one!"],['Sheriff Breadstick',"GO TO THE ELEVATOR NOW! I HAVE ALL OF THE ELEVATOR PARTS, BUT THE ELEVATOR CAN GO DOWN, NOT UP. WE NEED TO GET OUT OF THIS FLOOR IMMEDIATELY!"]],()=>{Y.s=18;S.go=1})}}
 function endLift(){Y.s=19;S.go=0;P.x=154;P.z=-56;yaw=Math.PI;say('Going down...',2500,'Tommy');liftRide(154,-56,null,null,0,-1,finalText,3000)}
-function finalText(){const o=$('ov');o.onpointerdown=null;o.style.display='flex';o.style.background='#000';const L=["Everything we worked so hard for was all wasted...","I have managed to let all of the monsters out of their cage, and brought Peanut Butter Jelly Man with us. He can be useful someday."];let i=0;const nx=()=>{if(i<L.length){o.textContent='Sheriff Breadstick:\n\n'+L[i];voice(L[i],'Sheriff Breadstick');wait(L[i++].length*65+1800,nx)}else{o.textContent='GARDEN OF BANAN 4\nCOMPLETE\n\nTo be continued in Chapter 5...';S.end=1}};nx()}
+function finalText(){const o=$('ov');o.onpointerdown=null;o.style.display='flex';o.style.background='#000';const L=["Everything we worked so hard for was all wasted...","I have managed to let all of the monsters out of their cage, and brought Peanut Butter Jelly Man with us. He can be useful someday."];let i=0;const nx=()=>{if(i<L.length){o.textContent='Sheriff Breadstick:\n\n'+L[i];voice(L[i],'Sheriff Breadstick');wait(L[i++].length*65+1800,nx)}else{o.textContent='GARDEN OF BANAN 4\nCOMPLETE\n\nTap to start Chapter 6';S.end=1;o.onpointerdown=()=>{o.onpointerdown=null;window.startCh6()}}};nx()}
 function obj4(){const s=Y.s;if(s==1)return'Pick up the baby chick';if(s==2)return'RUN! Escape Mr Large Lime Man!';if(s==3)return Y.dropped?'Touch the yellow drone remote':'Drop the baby chick';if(s==5)return"Answer the Sheriff's questions";if(s==6)return'Grab your drone and remote ('+((Y.g1?1:0)+(Y.g2?1:0))+'/2)';if(s==7)return'Walk east to the Kingdom (the Sheriff follows)';if(s==8)return'Meet your friend in the infirmary';if(s==9)return'Visit the locked up Jelly Man (or look around the train station)';if(s==11)return Y.veg?'Explore the camp... something shiny?':'Take a vegetable from the tray';if(s==12)return'Make Kittysaurus charge into the red button! Stand in front of it, then dodge!';if(s==13)return'Go east through the open door';if(s==14)return'Locked in! Press F, fly the drone through the vent, press the red button outside';if(s==15)return'Find the elevator part in the next room';if(s==16)return"Get Banan's elevator part in the infirmary";if(s==17)return'Go to the Kingdom throne room';if(s==18)return'GO TO THE ELEVATOR!';return'...'}
 function tick4(dt){TT+=dt;PL4.position.set(S.dr?Dp.x:P.x,2.6,S.dr?Dp.z:P.z);
 for(const a of ANI.slice()){a.t+=dt;const k=Math.min(1,a.t/a.d);a.f(k);if(k>=1){const i=ANI.indexOf(a);if(i>=0)ANI.splice(i,1);a.done&&a.done()}}
@@ -705,4 +706,68 @@ fd.style.opacity=1;
 wait(3200,()=>{o.style.display='none';liftRide(null,0,0,-134,Math.PI,1,()=>{Y.s=1;say('We made it up. What is that peeping sound?',4000,'Tommy')})})}
 window.startCh4=startCh4;
 })();
-</script></body></html>
+
+// ===================== GARDEN OF BANAN 6 =====================
+(function(){
+Object.assign(VP,{'Sir Pizza':[.3,.8],'Nanny':[1.6,.9],'Naughty One':[1.3,1.4],'Sheriff Breadstick':[.5,.85],'Carroty Jester':[1.9,1.25],'Nanab':[2,1.3],'Banan':[1.1,.85],'Bananaleena':[1.9,1.05],'Eggy Bird':[1.6,1.3]});
+let X={},TT=0,_t6=performance.now(),PL6=null,gh6=0;
+const ANI=[],MIN=[],LITE=[],BEAMS=[];
+const wait=(ms,f)=>setTimeout(f,ms);
+const wl=(...a)=>W(...a,0x5a5f6c);
+const rm=(x0,z0,x1,z1,fc=0x56565f)=>{const w=x1-x0,d=z1-z0,cx=(x0+x1)/2,cz=(z0+z1)/2;pl(w,d,cx,cz,0,fc);pl(w,d,cx,cz,3.5,0x24242c,Math.PI/2)};
+const wx=(x,z0,z1,gp)=>{if(gp){wl(x,z0,x,-2);wl(x,2,x,z1)}else wl(x,z0,x,z1)};
+const RR=(x0,x1,gl,gr,z0=-12,z1=12,fc)=>{rm(x0,z0,x1,z1,fc);wl(x0,z0,x1,z0);wl(x0,z1,x1,z1);wx(x0,z0,z1,gl);wx(x1,z0,z1,gr)};
+const lamp6=(x,z)=>{const m=new T.Mesh(new T.BoxGeometry(1.6,.08,.6),new T.MeshBasicMaterial({color:0xcfc59a}));m.position.set(x,3.44,z);sc.add(m)};
+const anim=(ms,f,done)=>ANI.push({t:0,d:ms/1000,f,done});
+const mvTo=(o,x,z,ms,done,face)=>{const a=o.position.x,b=o.position.z;if(face)o.rotation.y=Math.atan2(x-a,z-b);anim(ms,k=>{o.position.x=a+(x-a)*k;o.position.z=b+(z-b)*k},done)};
+const talk=(L,cb)=>{let i=0;const nx=()=>{if(i>=L.length){cb&&cb();return}const e=L[i++];if(e[0]=='!'){e[1]();setTimeout(nx,e[2]||1500);return}const t=e[1];say(t,t.length*70+900,e[0]);setTimeout(nx,t.length*70+1000)};nx()};
+const fadeTo=(o,ms,cb)=>{const a=parseFloat(fd.style.opacity)||0;tw(ms,k=>{fd.style.opacity=a+(o-a)*k},cb)};
+const jump=(e,msg,who)=>{const f=$('fl');f.textContent=e;f.style.cssText+=';display:flex;align-items:center;justify-content:center;font-size:45vmin';f.style.background='#f00';f.style.opacity=1;shake=.25;groan(260,.6);if(msg)say(msg,2500,who);wait(900,()=>{f.style.opacity=0;f.textContent='';shake=0})};
+const A6=(g,geo,c,x,y,z,sx=1,sy=1,sz=1)=>{const m=new T.Mesh(geo,M(c));m.position.set(x,y,z);m.scale.set(sx,sy,sz);g.add(m);return m};
+const SP=r=>new T.SphereGeometry(r,14,10),CN=(r,h)=>new T.ConeGeometry(r,h,8),CY=(a,b,h)=>new T.CylinderGeometry(a,b,h,14),BX=(w,h,d)=>new T.BoxGeometry(w,h,d);
+function mkMin(){const g=new T.Group();A6(g,SP(.5),0x2a1a3a,0,.6,0,1,1.2,1);[-.18,.18].forEach(x=>A6(g,SP(.09),0xff2020,x,.8,.42));[-.3,.3].forEach(x=>A6(g,CN(.12,.3),0x2a1a3a,x,1.3,0));return g}
+function mkPizza(){const g=new T.Group();A6(g,CY(1,1,.25),0xe8b04a,0,1.7,0).rotation.x=Math.PI/2;A6(g,CY(.85,.85,.27),0xc23b22,0,1.7,0).rotation.x=Math.PI/2;[[.4,.3],[-.4,.45],[.1,-.45],[-.5,-.2],[.5,-.3]].forEach(([x,y])=>A6(g,SP(.15),0x8a1c1c,x,1.7+y,.14,1,1,.4));[-.28,.28].forEach(x=>{A6(g,SP(.14),0xffffff,x,1.9,.2);A6(g,SP(.07),0,x,1.9,.3)});A6(g,CY(.32,.32,.5),0x222222,0,2.9,0);A6(g,CY(.6,.6,.06),0x222222,0,2.65,0);return g}
+function mkPig(){const g=new T.Group();A6(g,SP(.8),0xff9fb8,0,1,0,1.2,1,1.5);A6(g,SP(.5),0xff9fb8,0,1.4,1.3);A6(g,CY(.22,.22,.25),0xff7a9a,0,1.3,1.75).rotation.x=Math.PI/2;[-.3,.3].forEach(x=>{A6(g,CN(.17,.4),0xff9fb8,x,1.95,1.15);A6(g,SP(.08),0,x*.7,1.55,1.7)});[[-.5,.7],[.5,.7],[-.5,-.7],[.5,-.7]].forEach(([x,z])=>A6(g,CY(.15,.15,.6),0xff7a9a,x,.3,z));return g}
+function mkBird(){const g=ch('egg',0x6a2a2a).g;g.scale.setScalar(3.2);[[0,1.6,0],[.3,1.5,.2],[-.3,1.5,-.2]].forEach(p=>A6(g,CN(.12,.5),0xaa0000,p[0],p[1],p[2]));[-.2,.2].forEach(x=>A6(g,SP(.1),0xff2020,x,.95,.42));return g}
+function mkScep(){const g=new T.Group();A6(g,CY(.06,.06,1.6),0xffd21f,0,0,0);A6(g,SP(.22),0xff3b3b,0,.9,0);A6(g,CN(.1,.3),0xffd21f,0,1.2,0);return g}
+function inLite(x,z){return LITE.some(r=>r.on&&x>r.x0&&x<r.x1&&z>r.z0&&z<r.z1)}
+function respawn(){P.x=X.cp[0];P.z=X.cp[1];P.h=0;gh6=0;MIN.forEach(q=>q.m.position.set(q.home[0],0,q.home[1]))}
+function obj6(){const s=X.s;if(s==1)return'Find the keycard';if(s==2)return'Open the door with the green keycard';if(s==3)return'Go through the Storage Bay';if(s==4)return'RUN to the nearest light!';if(s==5)return'Parkour across the metal bars! (Jump: Space / ⬆️)';if(s==6)return'Press the light bulb';if(s==8)return'Go east through the dark. Your bulb drone keeps the Naughty Ones away';if(s==9)return'Find 3 light bulbs ('+X.bulbs+'/3), then connect them to the whiteboard';if(s==10)return'Wait for the video to end...';if(s==11)return X.core?'Upgrade the generator':'Take the generator core';if(s==12)return'Go east to Banan';if(s==13)return'Go to the watchtower';if(s==14)return X.k2?'Open the door with the orange keycard':'Take the orange keycard';if(s==15)return X.bat>=2?'Put the batteries on the electricity pole!':'Stay in the safe zones! Get the batteries ('+X.bat+'/2)';if(s==16)return'Power the generator ('+X.pw+'/3)';if(s==17)return'Enter the scepter vault';if(s==18)return'Run through the maze to the elevator!';return'...'}
+function intro(){const o=$('ov');o.onpointerdown=null;o.style.display='flex';o.style.background='#000';o.textContent='CHAPTER 6\nGarden of Banan 6';fd.style.opacity=1;
+wait(3200,()=>{o.style.display='none';liftRide(null,0,-8,-8,Math.PI,1,()=>{X.fol[0].on=1;S.go=0;talk([['Sheriff Breadstick',"The thought of what's happening on the floor above terrifies me. We can't stay here."],['Sheriff Breadstick',"Find the keycard and let's get out of here."]],()=>{X.s=1;S.go=1})})})}
+function pigScene(){X.s=6.5;S.go=0;say("My legs... I can't move!",2200,'Tommy');shake=.05;const n=X.nanny;n.visible=true;n.position.set(76,0,0);
+wait(1500,()=>{shake=0;mvTo(n,83.5,0,500,()=>{jump('🐷','OINK!','Nanny');wait(1300,()=>talk([['Nanny',"Oink... don't be scared, little one. Your drone needs a bright upgrade."],['!',()=>{X.bulb=1;say('DRONE UPGRADED: LIGHT BULB DRONE!',3500,'Drone')},3400],['Nanny',"Now go back down. Your friends are waiting. Oink!"]],()=>{mvTo(n,70,0,1500,()=>{n.visible=false},true);X.s=7;wait(1200,()=>liftRide(86,-9,100,-9,Math.PI,-1,hubArrive))}))},true)})}
+function hubArrive(){X.fol[0].on=0;X.sh.position.set(103,0,4);X.sh.rotation.y=Math.PI;X.bl.position.set(105.5,0,3);S.go=0;
+talk([['Bananaleena',"Someone took me and let me out, but I can't teach without a full attendance list."],['Bananaleena',"The principal will be very mad if I did."],['Sheriff Breadstick',"Stay in the light. Take your bulb drone through the dark, kid."]],()=>{S.go=1;X.s=8;X.cp=[112,0];MIN.slice(2).forEach(q=>{q.on=1;q.m.visible=true});X.minOn=1})}
+function videoStart(){X.s=10;X.vid=1;X.vt=0;say('The lights are connected!',2000,'Tommy');
+wait(1800,()=>say("We gotta wait until whatever video ends.",3500,'Carroty Jester'));
+wait(5000,()=>say("Hey, it's me, your friend, Banan. Just open this door.",3500,'Sir Pizza'));
+wait(8800,()=>{say('Open up.',1800,'Sir Pizza');shake=.04});
+wait(10600,()=>{say('Open Up.',1500,'Sir Pizza');shake=.08});
+wait(12200,()=>{say('OPEN UP.',1500,'Sir Pizza');shake=.12;groan(80,.4)});
+wait(13800,()=>{say('OPEN UP!!!',1800,'Sir Pizza');shake=.2;groan(60,.8)});
+wait(15800,()=>{shake=0;say('...I think he left.',2500,'Carroty Jester')});
+wait(18000,()=>{X.vid=0;X.cv.fillStyle='#000';X.cv.fillRect(0,0,512,256);X.cv.fillStyle='#fff';X.cv.font='bold 40px sans-serif';X.cv.textAlign='center';X.cv.fillText('THE END',256,140);X.tx.needsUpdate=true;X.coreM.visible=true;X.s=11;say('The video ended. A generator core popped out!',3500,'Tommy')})}
+function tower(){X.s=13.5;S.go=0;X.fol[1].on=0;X.sh.position.set(214.5,1.75,-7);X.sh.rotation.y=-Math.PI/2;X.bl.position.set(217.5,1.75,-7);X.bl.rotation.y=-Math.PI/2;X.jes.position.set(209,0,0);
+talk([['Sheriff Breadstick',"Carroty. The most wanted criminal, working with my partner."],['Sheriff Breadstick',"I shouldn't have trusted you."],['Carroty Jester',"Wait, wait! I can explain!"],
+['!',()=>{X.nt.forEach((m,i)=>{m.visible=true;m.position.set(227,0,i*4-4);mvTo(m,217,-4+i*.8,1100,null,true)});groan(100,1)},1500],
+['Bananaleena',"Eek! Let go of me!"],
+['!',()=>{anim(500,k=>{X.bl.position.y=1.75*(1-k)});mvTo(X.bl,226,10,1500,null,true);X.nt.forEach(m=>mvTo(m,226+Math.random(),10,1500,()=>{m.visible=false},true));wait(1600,()=>{X.bl.visible=false})},1900],
+['Sheriff Breadstick',"They took her into the dark! Take this keycard, kid. Go, go!"]],()=>{X.k2m.visible=true;X.s=14;S.go=1})}
+function collapse(){X.s=14.5;S.go=0;shake=.25;groan(70,2);say('The floor is cracking...!',2000,'Tommy');
+wait(1800,()=>{say('AAAAH!',1500,'Tommy');fadeTo(1,800,()=>{shake=0;P.x=300;P.z=3;P.h=0;gh6=0;yaw=Math.PI;pit=0;X.fol.forEach(f=>f.on=0);X.sh.visible=false;X.jes.visible=false;X.cp=[300,3];X.s=15;X.bird.visible=true;X.bird.position.set(320,0,0);X.ba=0;
+fadeTo(0,900,()=>{talk([['Banan',"Quick! Stay in the middle where it can't reach you!"],['Banan',"Grab the 2 batteries from the tents and put them on the electricity pole."],['Banan',"Between the two tents the bird can't see you. If you get out of the middle... good luck."]],()=>{S.go=1;X.grace=3})})})})}
+function burn(){S.go=0;X.s=16;say('ZZZZAP!',2000);groan(300,1.5);const b=X.bird;anim(2400,k=>{b.visible=(Math.floor(k*30)%2==0)&&k<.92;b.rotation.z=Math.sin(k*40)*.15;shake=.2*(1-k)},()=>{b.visible=false;shake=0;X.dead=1;talk([['Banan',"That did it! Now power the generator three times to open the scepter door!"]],()=>{S.go=1})})}
+function vault(){X.s=17.5;S.go=0;X.jes.visible=true;X.jes.position.set(P.x-3,0,P.z+2);X.ban.visible=true;X.ban.position.set(343,0,6);X.ban.rotation.y=Math.PI/2;
+talk([['Banan',"We're here. Nanab, hit the eject button!"],['!',()=>mvTo(X.nan,349.2,-1,1200,()=>{X.scep.visible=true;X.scep.position.set(350,1.9,0);groan(150,.6)},true),2400],['Carroty Jester',"The scepter... it's missing a piece."],
+['!',()=>{X.pz.visible=true;X.pz.position.set(334,0,0);X.pz.rotation.y=Math.PI/2;X.pm.forEach((m,i)=>{m.visible=true;m.position.set(333,0,i?3:-3)});groan(60,1)},1300],
+['Sir Pizza',"Hand over the scepter, little crumbs... or become one of us."],['Banan',"Not today! Nanab, forgive me!"],
+['!',()=>{anim(1400,k=>{X.nan.scale.setScalar(1.5+k*3.5)});groan(80,1.4);shake=.2},1700],['Nanab',"GRRRAAAAH!"],['Sir Pizza',"Retreat! Retreat!"],
+['!',()=>{shake=0;X.pz.visible=false;X.pm.forEach(m=>{m.visible=false});openD(X.dV)},700],['Banan',"The Mutant will hold them! Take the scepter and run to the elevator!"]],()=>{X.scep.visible=false;X.s=18;X.cp=[364,0];S.go=1;say('(You grabbed the scepter!)',2500)})}
+function finale(){X.s=19;S.go=0;P.x=389;P.z=-9;yaw=Math.PI;X.fol.forEach(f=>f.on=0);
+X.bl.visible=true;X.bl.position.set(386,0,6);X.bl.rotation.y=Math.PI;X.jes.position.set(388.5,0,8);X.jes.rotation.y=Math.PI;X.nan.position.set(383,0,4);X.nan.scale.setScalar(3.5);X.eg6.visible=true;X.eg6.position.set(391,0,6);X.pz.visible=true;X.pz.position.set(387,0,10);X.pz.rotation.y=Math.PI;X.ban.visible=true;X.ban.position.set(389,0,-2);X.ban.rotation.y=0;
+talk([['Sir Pizza',"Give us the scepter, little crumbs!"],['Banan',"I'll hold them off! Look for the surgeon!"]],()=>liftRide(389,-9,null,null,0,-1,montage,3600))}
+function montage(){const o=$('ov');o.onpointerdown=null;o.style.display='flex';o.style.background='#000';o.textContent='...';
+const L=[['🍌',"Bananaleena?! No, not you too!"],['🥕',"Carroty?! Get away from me!"],['🕷️',"Nanab! Please, remember who you are!"],['🥚',"Eggy... no, no, no!"],['🍕',"Sir Pizza! Aaaaah!"]];
+L.forEach((e,i)=>wait(1500+i*2400,()=>{o.style.background=i==4?'#a01010':'#300';o.innerHTML='<div style="font-size:30vmin">'+e[0]+'</div><div style="font-size:5vmin">'+e[1]+'</div>';voice(e[1],'Banan');groan(220-i*25,.6)}));
+wait(1500+L.length*2400,()=>{o.style.background='#000';o.textContent='GARDEN OF BANAN 6\nCOMPLETE\n\nTo be continued...';S.end=1})}
