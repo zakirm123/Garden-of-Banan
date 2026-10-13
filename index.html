@@ -767,7 +767,139 @@ talk([['Banan',"We're here. Nanab, hit the eject button!"],['!',()=>mvTo(X.nan,3
 function finale(){X.s=19;S.go=0;P.x=389;P.z=-9;yaw=Math.PI;X.fol.forEach(f=>f.on=0);
 X.bl.visible=true;X.bl.position.set(386,0,6);X.bl.rotation.y=Math.PI;X.jes.position.set(388.5,0,8);X.jes.rotation.y=Math.PI;X.nan.position.set(383,0,4);X.nan.scale.setScalar(3.5);X.eg6.visible=true;X.eg6.position.set(391,0,6);X.pz.visible=true;X.pz.position.set(387,0,10);X.pz.rotation.y=Math.PI;X.ban.visible=true;X.ban.position.set(389,0,-2);X.ban.rotation.y=0;
 talk([['Sir Pizza',"Give us the scepter, little crumbs!"],['Banan',"I'll hold them off! Look for the surgeon!"]],()=>liftRide(389,-9,null,null,0,-1,montage,3600))}
-function montage(){const o=$('ov');o.onpointerdown=null;o.style.display='flex';o.style.background='#000';o.textContent='...';
-const L=[['🍌',"Bananaleena?! No, not you too!"],['🥕',"Carroty?! Get away from me!"],['🕷️',"Nanab! Please, remember who you are!"],['🥚',"Eggy... no, no, no!"],['🍕',"Sir Pizza! Aaaaah!"]];
-L.forEach((e,i)=>wait(1500+i*2400,()=>{o.style.background=i==4?'#a01010':'#300';o.innerHTML='<div style="font-size:30vmin">'+e[0]+'</div><div style="font-size:5vmin">'+e[1]+'</div>';voice(e[1],'Banan');groan(220-i*25,.6)}));
-wait(1500+L.length*2400,()=>{o.style.background='#000';o.textContent='GARDEN OF BANAN 6\nCOMPLETE\n\nTo be continued...';S.end=1})}
+function montage(){
+const BARS=[[71.6,73.4,-2.5,1],[75.2,77,-1,2.5],[78.8,79.95,-2,2]];
+function addMin(hx,hz,lo,hi,sp){const m=mkMin();m.position.set(hx,0,hz);m.visible=false;sc.add(m);MIN.push({m,home:[hx,hz],on:0,lo,hi,sp,ph:Math.random()*6})}
+function bay(){X.s=4;S.go=0;X.fol[0].on=1;talk([['Sheriff Breadstick',"WE CAN'T STAY HERE! GET TO THE NEAREST LIGHT!"],['!',()=>{MIN[0].on=1;MIN[1].on=1;MIN[0].m.visible=true;MIN[1].m.visible=true;groan(70,1.2)},600]],()=>{X.cp=[6,0];S.go=1})}
+function safeRoom(){X.s=5;S.go=0;X.fol[0].on=0;MIN[0].on=0;MIN[1].on=0;MIN[0].m.visible=false;MIN[1].m.visible=false;X.sh.position.set(65,0,8);X.sh.rotation.y=-Math.PI/2;
+talk([['Sheriff Breadstick',"Phew... the Naughty Ones can't enter the light."],['Sheriff Breadstick',"I'll stay here. Cross the metal bars and press the light bulb on the other side, kid."]],()=>{X.cp=[67,0];S.go=1})}
+function jesterTask(){X.s=8.5;S.go=0;X.jes.visible=true;X.jes.position.set(150,0,6);X.jes.rotation.y=Math.atan2(P.x-150,P.z-6);
+talk([['Carroty Jester',"Hehehe! A visitor in the dark! I'm Carroty, the funniest mascot around."],['Carroty Jester',"Here's a task: find 3 light bulbs and connect them to the whiteboard. It will make a video player!"]],()=>{X.s=9;X.fol[1].on=1;S.go=1})}
+function banTalk6(){X.s=12.5;S.go=0;talk([['Banan',"I'm happy to see you survived the dark."],['Banan',"I heard the scepter door needs to be powered 3 times. I'll stay here."],['Banan',"And hey... Carroty."],['Carroty Jester',"...Hi, Banan."],['Banan',"The watchtower is east. The Sheriff and Bananaleena are waiting."]],()=>{X.s=13;S.go=1})}
+function respBird(){X.bird.position.set(322,0,0);X.grace=2.5}
+function tick6(dt){TT+=dt;const lx=S.dr?Dp.x:P.x,lz=S.dr?Dp.z:P.z;PL6.position.set(lx,2.6,lz);PL6.intensity=X.bulb?1.5:1.1;PL6.distance=X.bulb?26:18;
+for(const a of ANI.slice()){a.t+=dt;const k=Math.min(1,a.t/a.d);a.f(k);if(k>=1){const i=ANI.indexOf(a);if(i>=0)ANI.splice(i,1);a.done&&a.done()}}
+if(X.vid){X.vt+=dt;const q=X.cv,t=X.vt;q.fillStyle='#10102a';q.fillRect(0,0,512,256);['#e23030','#ffd21f','#3ecf3e','#2f6bff','#ff7fb7','#ffffff'].forEach((c,i)=>{q.fillStyle=c;q.fillRect((t*60+i*90)%560-40,50+i*28+Math.sin(t*3+i)*10,60,20)});q.fillStyle='#fff';q.font='bold 24px sans-serif';q.textAlign='center';q.fillText('GARDEN OF BANAN PRESCHOOL',256,30);q.fillRect(20,238,472*Math.min(1,t/18),8);X.tx.needsUpdate=true}
+if(!S.go||S.end)return;
+for(const f of X.fol){if(!f.on)continue;const o=f.o,dx=P.x-o.position.x,dz=P.z-o.position.z,d=Math.hypot(dx,dz);if(d>f.d){o.position.x+=dx/d*f.sp*dt;o.position.z+=dz/d*f.sp*dt}o.rotation.y=Math.atan2(dx,dz)}
+// Naughty Ones
+const prot=X.bulb&&Math.hypot(lx-P.x,lz-P.z)<8;
+for(const q of MIN){if(!q.on)continue;const m=q.m,mx=m.position.x,mz=m.position.z,dP=Math.hypot(P.x-mx,P.z-mz),dL=X.bulb?Math.hypot(lx-mx,lz-mz):99;let tx,tz,sp=q.sp;
+if(X.bulb&&dL<8){tx=mx+(mx-lx);tz=mz+(mz-lz);sp*=1.2}
+else if(!inLite(P.x,P.z)&&dP<30){tx=P.x;tz=P.z}
+else{tx=q.home[0];tz=q.home[1];sp*=.5}
+const ex=tx-mx,ez=tz-mz,ed=Math.hypot(ex,ez);
+if(ed>.4){let nx=mx+ex/ed*sp*dt,nz=mz+ez/ed*sp*dt;nx=Math.max(q.lo,Math.min(q.hi,nx));nz=Math.max(-11,Math.min(11,nz));if(!inLite(nx,nz)){m.position.x=nx;m.position.z=nz}m.rotation.y=Math.atan2(ex,ez)}
+m.position.y=Math.abs(Math.sin(TT*8+q.ph))*.15;
+if(dP<1.2&&!inLite(P.x,P.z)&&!prot){jump('😈','The Naughty Ones got you!','Naughty One');respawn();break}}
+// Eggy mutant bird
+if((X.s==15||X.s==16)&&!X.dead){const b=X.bird;if(X.grace>0)X.grace-=dt;else{const sz=P.x>306&&P.x<320&&P.z>-5&&P.z<5,dx=P.x-b.position.x,dz=P.z-b.position.z,dP=Math.hypot(dx,dz);let tx,tz,sp=2.8;
+if(!sz&&dP<20){tx=P.x;tz=P.z;sp=3.5}else{X.ba+=dt*.4;tx=313+Math.cos(X.ba)*16;tz=Math.sin(X.ba)*14}
+const ex=tx-b.position.x,ez=tz-b.position.z,ed=Math.hypot(ex,ez);
+if(ed>.3){b.position.x=Math.max(293,Math.min(333,b.position.x+ex/ed*sp*dt));b.position.z=Math.max(-18,Math.min(18,b.position.z+ez/ed*sp*dt));b.rotation.y=Math.atan2(ex,ez)}
+b.position.y=Math.abs(Math.sin(TT*5))*.2;
+if(!sz&&dP<2.8){jump('🐦','Mutated Eggy got you!','Eggy Bird');respawn();respBird()}}}
+// triggers
+const s=X.s;
+if(s==3&&P.x>10)bay();
+if(s==4&&!X.lo&&P.x>44){X.lo=1;X.LC.on=1;X.lcl.intensity=1.8;X.lcm.forEach(m=>m.visible=true);say("I'm opening the lights! Get inside!",3000,'Sheriff Breadstick')}
+if(s==4&&P.x>61)safeRoom();
+if((s==5||s==6)&&P.h==0&&P.x>70.2&&P.x<79.9){const on=BARS.some(b=>P.x>b[0]-.25&&P.x<b[1]+.25&&P.z>b[2]-.25&&P.z<b[3]+.25);if(!on){say('Aaaah!',1200,'Tommy');groan(150,.5);respawn()}}
+if(s==5&&P.x>80.6){X.s=6;X.cp=[83,0];say('Made it! Now press the light bulb!',3000,'Tommy')}
+if(s==8&&P.x>142)jesterTask();
+if(s==12&&P.x>178)banTalk6();
+if(s==13&&P.x>206)tower();
+if(s==14&&P.x>254)collapse();
+if(s==17&&P.x>340){X.nan.visible=true;X.nan.position.set(343.5,0,3);vault()}
+if(s==18&&P.x>387)finale()}
+function build6(){
+const L6=a=>a.forEach(([x,z])=>lamp6(x,z));
+const crate=(x,z)=>{bx(2.4,1.6,2.4,x,.8,z,0x7a5a30);C.push({x0:x-1.2,x1:x+1.2,z0:z-1.2,z1:z+1.2,on:1})};
+// A: elevator room
+RR(-12,4,0,1,-12,12,0x4a4a58);L6([[-4,-4],[-4,6]]);mkLift(-8,-8,'ELEVATOR');
+const pj=ch('pbj',0x8b5a2b).g;pj.scale.setScalar(.9);pj.position.set(-6.9,.5,-9.1);pj.rotation.z=Math.PI/2;sc.add(pj);
+bx(1.8,.8,1,-2,.4,-6,0x777788);const kG=kc(-2,.84,-6,0x3ecf3e);
+X.dA=door(4,0,4,'x',0x3ecf3e);
+ia(-2,.9,-6,2.4,'p',()=>X.s==1,()=>'Take the green keycard',()=>{kG.visible=false;X.k1=1;X.s=2;say('Got the green keycard!',2000,'Tommy')});
+ia(2.4,1.4,0,3,'p',()=>X.s>=1&&!X.dA.open,()=>X.k1?'Open the door (green keycard)':'Locked',()=>{if(!X.k1)return say('Locked. I need a keycard first.',2300,'Tommy');openD(X.dA);X.s=3;say('The door opened.',2000)});
+// B: Storage Bay
+RR(4,60,1,1,-12,12,0x3c3c46);tp('STORAGE BAY',3,.7,10,2.8,-11.8,0,'#222','#ffd21f',34);
+[[14,-7],[14,7],[22,-5],[22,6],[30,-8],[30,7],[36,-3.5],[38,5],[46,-7],[46,7],[52,-4],[52,5.5]].forEach(([x,z])=>crate(x,z));
+addMin(5,-9,4.5,59,3.0);addMin(5,9,4.5,59,3.0);
+// C: light room
+RR(60,70,1,1,-12,12,0x7a7a6a);X.lcm=[];[[62,-6],[62,6],[67,-6],[67,6]].forEach(([x,z])=>{const m=new T.Mesh(new T.BoxGeometry(1.6,.08,.6),new T.MeshBasicMaterial({color:0xffffee}));m.position.set(x,3.44,z);m.visible=false;sc.add(m);X.lcm.push(m)});
+X.lcl=new T.PointLight(0xfff6dd,0,30);X.lcl.position.set(65,3,0);sc.add(X.lcl);LITE.push(X.LC={x0:58,x1:70.2,z0:-12,z1:12,on:0});
+tp('LIGHT ROOM\nSafe from the Naughty Ones',4,1.2,65,2.6,-11.8,0,'#fffbe0','#222',30);
+// D: parkour over the pit
+wl(70,-12,80,-12);wl(70,12,80,12);pl(10,24,75,0,3.5,0x24242c,Math.PI/2);pl(10,24,75,0,-4,0x1a0a0a);
+BARS.forEach(b=>{bx(b[1]-b[0],.2,b[3]-b[2],(b[0]+b[1])/2,-.1,(b[2]+b[3])/2,0x8a929a);bx(b[1]-b[0],.05,.12,(b[0]+b[1])/2,.04,b[2]+.06,0xffd21f)});L6([[72,0],[76,0],[78,0]]);
+// E: light bulb room
+RR(80,92,1,0,-12,12,0x56565f);mkLift(86,-9,'ELEVATOR');lamp6(84,3);
+bx(.6,.9,.6,86,.45,1.2,0x444455);X.bm=new T.Mesh(new T.SphereGeometry(.28,12,10),new T.MeshBasicMaterial({color:0xffee88}));X.bm.position.set(86,1.2,1.2);sc.add(X.bm);
+ia(86,1.1,1.2,3,'p',()=>X.s==6,()=>'Press the light bulb',()=>{X.bm.material.color.setHex(0x886600);pigScene()});
+X.nanny=mkPig();X.nanny.scale.setScalar(1.2);X.nanny.visible=false;sc.add(X.nanny);
+// H: hub light room
+RR(96,114,0,1,-12,12,0x5a5a62);mkLift(100,-9,'ELEVATOR');X.lhl=new T.PointLight(0xfff6dd,1.6,34);X.lhl.position.set(105,3,0);sc.add(X.lhl);L6([[102,-5],[102,5],[108,-5],[108,5]]);LITE.push(X.LH={x0:96,x1:114.2,z0:-12,z1:12,on:1});
+tp('LIGHT ROOM',3,.7,105,2.8,-11.8,0,'#fffbe0','#222',34);
+X.sh=MK('sheriff');X.sh.position.set(-5,0,-5.5);sc.add(X.sh);
+X.bl=ch('banaleena',0xffd21f).g;X.bl.scale.setScalar(1.5);X.bl.position.set(105.5,0,3);sc.add(X.bl);
+// D1: the dark
+RR(114,140,1,1,-12,12,0x2e2e38);[[123,-6],[128,5],[133,-5],[137,5]].forEach(([x,z])=>crate(x,z));
+addMin(120,-9,114.6,139.4,2.3);addMin(124,9,114.6,139.4,2.3);addMin(131,-9.5,114.6,139.4,2.3);addMin(136,9,114.6,139.4,2.3);
+// W: whiteboard room
+RR(140,170,1,1,-12,12,0x3a3a46);
+const cvEl=document.createElement('canvas');cvEl.width=512;cvEl.height=256;X.cv=cvEl.getContext('2d');X.tx=new T.CanvasTexture(cvEl);
+X.cv.fillStyle='#10102a';X.cv.fillRect(0,0,512,256);X.cv.fillStyle='#667';X.cv.font='bold 44px sans-serif';X.cv.textAlign='center';X.cv.fillText('NO SIGNAL',256,140);X.tx.needsUpdate=true;
+const wb=new T.Mesh(new T.PlaneGeometry(8,4),new T.MeshBasicMaterial({map:X.tx}));wb.position.set(155,2.3,-11.8);sc.add(wb);
+[[146,8],[160,9],[163,-6]].forEach(([x,z])=>{bx(1.2,.7,1,x,.35,z,0x6b4a2a);const b=new T.Mesh(new T.SphereGeometry(.2,10,8),new T.MeshBasicMaterial({color:0xffee88}));b.position.set(x,.9,z);sc.add(b);ia(x,.9,z,2.6,'p',()=>b.visible&&X.s==9,()=>'Take light bulb',()=>{b.visible=false;X.bulbs++;say('Light bulb '+X.bulbs+'/3',1800,'Tommy')})});
+X.coreM=new T.Mesh(new T.CylinderGeometry(.3,.3,.5,12),new T.MeshBasicMaterial({color:0x66ffcc}));X.coreM.position.set(155,.9,-9.6);X.coreM.visible=false;sc.add(X.coreM);bx(1.2,.7,1,155,.35,-9.6,0x555a66);
+ia(155,1.4,-10,3.6,'p',()=>X.s==9,()=>X.bulbs>=3?'Connect the bulbs to the whiteboard':'Whiteboard needs 3 light bulbs ('+X.bulbs+'/3)',()=>X.bulbs>=3?videoStart():say('I need 3 light bulbs first.',2200,'Tommy'));
+ia(155,.9,-9,2.8,'p',()=>X.s==11&&!X.core,()=>'Take the generator core',()=>{X.core=1;X.coreM.visible=false;say('A generator core!',2000,'Tommy')});
+bx(2,1.6,1.4,167.5,.8,-6,0x555a66);bx(.3,.3,.1,167.5,1.2,-5.25,0xff8a1f);X.dG=door(170,0,4,'x',0x6a6a7a);
+ia(167.5,1,-5.5,3.2,'p',()=>X.s==11&&X.core,()=>'Upgrade the generator',()=>{X.s=12;openD(X.dG);groan(100,1.2);say('The generator roared to life... a door opened!',3500,'Tommy')});
+X.jes=MK('jester');X.jes.visible=false;sc.add(X.jes);
+// Banan's room
+RR(170,196,1,1,-12,12,0x44505a);X.ban=ch('banan',0xe23030).g;X.ban.position.set(186,0,0);X.ban.rotation.y=-Math.PI/2;sc.add(X.ban);L6([[180,0],[190,0]]);
+// T: watchtower light room
+RR(196,244,1,1,-12,12,0x5a5f66);X.ltl=new T.PointLight(0xfff6dd,1.6,40);X.ltl.position.set(220,3,0);sc.add(X.ltl);L6([[205,0],[215,6],[225,0],[235,0],[215,-2]]);LITE.push(X.LT={x0:196,x1:244.2,z0:-12,z1:12,on:1});
+bx(9,.25,5,216,1.62,-7,0x6a5a3a);[[211.8,-9.2],[220.2,-9.2],[211.8,-4.8],[220.2,-4.8]].forEach(([x,z])=>{bx(.4,1.5,.4,x,.75,z,0x4a3a22);C.push({x0:x-.3,x1:x+.3,z0:z-.3,z1:z+.3,on:1})});
+tp('WATCHTOWER',3,.7,216,3,-11.8,0,'#2a1a10','#ffd21f',32);
+X.k2m=kc(210,.12,3,0xff8800,0);X.dO=door(244,0,4,'x',0xff8800);
+ia(210,.15,3,2.6,'p',()=>X.s==14&&!X.k2,()=>'Take the orange keycard',()=>{X.k2=1;X.k2m.visible=false;say('Got the orange keycard!',2000,'Tommy')});
+ia(241.8,1.4,0,3,'p',()=>X.s==14&&!X.dO.open,()=>X.k2?'Open the door (orange keycard)':'Locked',()=>{if(!X.k2)return say('Locked. I need the keycard.',2500,'Tommy');openD(X.dO);say('The door opened.',2000)});
+X.nt=[0,1,2].map(()=>{const m=mkMin();m.visible=false;sc.add(m);return m});
+// hall where the floor collapses
+rm(244,-3,270,3,0x3a3a44);wl(244,-3,270,-3);wl(244,3,270,3);wl(270,-3,270,3);L6([[250,0],[258,0],[266,0]]);
+// arena (Mutated Eggy Baby Bird)
+rm(290,-20,336,20,0x40483a);wl(290,-20,336,-20);wl(290,20,336,20);wl(290,-20,290,20);wl(336,-20,336,-2);wl(336,2,336,20);X.dS=door(336,0,4,'x',0xffd21f);
+const tent=z=>{const t=new T.Mesh(new T.ConeGeometry(3,3.2,4),M(0x8a6a3a));t.position.set(313,1.6,z);t.rotation.y=Math.PI/4;sc.add(t)};tent(-12);tent(12);
+pl(14,10,313,0,.03,0x6a6a30);tp('SAFE ZONE',3,.7,313,3,-4.9,0,'#222','#ffe9b0',34);const al=new T.PointLight(0xffe9b0,1.3,22);al.position.set(313,2.6,0);sc.add(al);
+[-9.4,9.4].forEach(z=>{const b=new T.Mesh(new T.CylinderGeometry(.14,.14,.4,10),M(0x22cc44));b.position.set(313,.5,z);sc.add(b);ia(313,.6,z,2.4,'p',()=>b.visible&&X.s==15,()=>'Take battery',()=>{b.visible=false;X.bat++;say('Battery '+X.bat+'/2',1800,'Tommy')})});
+const pole=new T.Mesh(new T.CylinderGeometry(.2,.25,6,8),M(0x5a4a3a));pole.position.set(329,3,0);sc.add(pole);bx(2.4,.2,.2,329,5.8,0,0x5a4a3a);
+ia(329,1.2,0,3.2,'p',()=>X.s==15,()=>X.bat>=2?'Put the batteries on the electricity pole':'The pole needs 2 batteries ('+X.bat+'/2)',()=>X.bat>=2?burn():say('I need 2 batteries from the tents.',2500,'Tommy'));
+bx(2,1.4,1.4,331,.7,13,0x555a66);bx(.3,.3,.1,331,1.1,12.25,0x33ff66);
+ia(331,1,12,3.2,'p',()=>X.s==16&&!X.pwb,()=>'Power the generator ('+X.pw+'/3)',()=>{X.pw++;X.pwb=1;shake=.12;groan(150,.5);wait(900,()=>{shake=0;X.pwb=0});say('Power '+X.pw+'/3',1500,'Tommy');if(X.pw>=3){X.s=17;openD(X.dS);wait(1000,()=>say('The scepter door opened!',3000,'Banan'))}});
+X.bird=mkBird();X.bird.visible=false;sc.add(X.bird);
+// scepter vault
+RR(336,362,1,1,-10,10,0x6a5a3a);L6([[345,-5],[345,5],[355,-5],[355,5]]);tp('SCEPTER VAULT',3,.7,349,3,-9.8,0,'#2a1a10','#ffd21f',32);
+X.dV=door(362,0,4,'x',0x8a2a2a);bx(2,1,2,351,.5,0,0x333344);bx(.3,.3,.3,349.8,.9,-1,0xff2020);
+X.scep=mkScep();X.scep.visible=false;sc.add(X.scep);
+X.nan=MK('nanab');X.nan.scale.setScalar(1.5);X.nan.visible=false;sc.add(X.nan);
+X.pz=mkPizza();X.pz.visible=false;sc.add(X.pz);X.pm=[0,1].map(()=>{const m=mkMin();m.visible=false;sc.add(m);return m});
+// maze + elevator
+RR(362,392,1,0,-12,12,0x3e3a48);wl(367,-12,367,4);wl(372,-4,372,12);wl(377,-12,377,4);wl(382,-4,382,12);wl(386.5,-6,386.5,12);L6([[364,0],[369,8],[374,-8],[379,8],[384,-8]]);
+mkLift(389,-9,'ELEVATOR');
+X.eg6=ch('egg',0x6a2a2a).g;X.eg6.scale.setScalar(1.8);X.eg6.visible=false;sc.add(X.eg6);
+X.fol=[{o:X.sh,on:0,d:3.5,sp:3.6},{o:X.jes,on:0,d:3.2,sp:3.5}]}
+function startCh6(){while(sc.children.length)sc.remove(sc.children[0]);C.length=0;D.length=0;IA.length=0;LIFTS.length=0;ANI.length=0;MIN.length=0;LITE.length=0;LY=0;
+X={s:0,cp:[-6,0],bulbs:0,bat:0,pw:0,fol:[]};
+cam.far=600;cam.updateProjectionMatrix();
+sc.background=new T.Color(0x05050a);sc.fog=new T.Fog(0x05050a,3,26);PL6=new T.PointLight(0xfff2d8,1.1,18);sc.add(new T.AmbientLight(0xffffff,.38),PL6);
+Object.assign(S,{go:0,end:0,note:0,dr:0,remote:1,launched:0,chase:0,rise:0,lgf:0,lm:0,ride:0,elev:0,fell:1});eg.visible=false;lime.visible=false;
+$('fl').style.opacity=0;shake=0;build6();
+R.render=(s,c)=>{const n=performance.now(),dt=Math.min((n-_t6)/1000,.05);_t6=n;tick6(dt);c.position.y+=LY;RAW(s,c);$('obj').textContent='Objective: '+obj6();
+$('inv').textContent=['Drone',X.bulb?'Bulb drone':'',X.k1&&X.s<=2?'Green key':'',X.k2&&X.s==14?'Orange key':'',X.s==9?'Bulbs '+X.bulbs+'/3':'',X.s==11&&X.core?'Core':'',X.s==15?'Batteries '+X.bat+'/2':'',X.s>=18?'Scepter':''].filter(Boolean).join(' | ')};
+intro()}
+window.startCh6=startCh6;
+})();
+</script></body></html>
