@@ -888,5 +888,77 @@ R.render=(s,c)=>{const n=performance.now(),dt=Math.min((n-_t6)/1000,.05);_t6=n;t
 $('inv').textContent=['Drone',X.bulb?'Bulb drone':'',X.k1&&X.s<=2?'Green key':'',X.k2&&X.s==14?'Orange key':'',X.s==9?'Bulbs '+X.bulbs+'/3':'',X.s==11&&X.core?'Core':'',X.s==15?'Batteries '+X.bat+'/2':'',X.s>=18?'Scepter':''].filter(Boolean).join(' | ')};
 intro()}
 window.startCh6=startCh6;
+/* ===== RAINY BUS DREAM + SECRET ROOM (Chapter 6) ===== */
+const DX=2000,DZ=0;
+const BD={on:0,done:0,key:0,n:0,read:[0,0,0,0,0,0,0,0],b:[],c:{},lt:0,th:0};
+const bShow=(t,who)=>{S.note=1;$('nt').textContent=t+'\n\n(tap or press E to close)';$('nt').style.display='block';if(who)voice(t.replace(/\n+/g,' '),who)};
+const chain=a=>{let i=0;const nx=()=>{if(i<a.length)a[i++](nx)};nx()};
+const NT6=["Note 1/8\n\nTommy,\n\nI built this little room as a hiding place for when the Naughty Ones came. If you found it, you are smarter than I ever was.\n\n- Dad","Note 2/8\n\nTommy,\n\nThe Naughty Ones hate light. Any light: a bulb, a lamp, even a flashlight. Never walk in the dark without one.\n\n- Dad","Note 3/8\n\nTommy,\n\nSir Pizza was not always like this. He was the very first mascot ever built, long before the Banan family. Then the dark got to him.\n\n- Dad","Note 4/8\n\nTommy,\n\nNanny the pig looks scary, but she is a friend. She hides good upgrades for anyone kind enough to follow her oink.\n\n- Dad","Note 5/8\n\nTommy,\n\nPB Jelly Man shows dreams. Some are memories. Some are warnings. If you ever dream of a rainy bus stop, do not get on the bus.\n\n- Dad","Note 6/8\n\nTommy,\n\nThe scepter belongs to Queen Kangaroo. Whoever holds it can open every door in the Kingdom. Protect it with your life.\n\n- Dad","Note 7/8\n\nTommy,\n\nThere is a surgeon somewhere far below. If someone has been twisted into a monster, the surgeon is the only one who can turn them back.\n\n- Dad","Note 8/8\n\nTommy,\n\nI am so proud of you, buddy. When this is over I will take you home and we will share a whole Snickers bar.\n\nLove, Dad"];
+function mkBus(col,dirty){const g=new T.Group();
+A6(g,BX(9,2.4,2.8),col,0,1.7,0);A6(g,BX(9.04,.45,2.84),dirty?0x1e1e18:0xffffff,0,.7,0);
+for(let i=0;i<5;i++)A6(g,BX(1.3,.9,2.9),dirty?0x07070c:0xa8dcff,-3.2+i*1.6,2.2,0);
+A6(g,BX(1.1,1.8,.06),0x0b0b0b,2.9,1.35,1.43);
+if(dirty)[[-2.5,1.5],[0,2.4],[3,1.2]].forEach(p=>A6(g,BX(2,.7,2.86),0x2a2214,p[0],p[1],0));
+[[-3,1.45],[3,1.45],[-3,-1.45],[3,-1.45]].forEach(p=>{A6(g,CY(.6,.6,.4),0x0c0c0c,p[0],.6,p[1]).rotation.x=Math.PI/2});
+[-.8,.8].forEach(z=>{const h=new T.Mesh(new T.SphereGeometry(.22,8,6),new T.MeshBasicMaterial({color:dirty?0xff2020:0xffffcc}));h.position.set(4.55,1.1,z);g.add(h)});
+return g}
+function busGo(b,x0,x1,ms,ez,done,fk){b.visible=true;b.position.x=DX+x0;anim(ms,k=>{const e=ez=='out'?1-(1-k)*(1-k):ez=='in'?k*k:k;b.position.x=DX+x0+(x1-x0)*e;if(fk)fk(k)},()=>{if(done)done()})}
+function rainSnd(on){try{if(on){const a=new(window.AudioContext||window.webkitAudioContext)(),b=a.createBuffer(1,a.sampleRate*2,a.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*.5;const s=a.createBufferSource(),f=a.createBiquadFilter(),gn=a.createGain();s.buffer=b;s.loop=true;f.type='lowpass';f.frequency.value=1800;gn.gain.value=.12;s.connect(f);f.connect(gn);gn.connect(a.destination);s.start();BD.snd={a,s}}else if(BD.snd){BD.snd.s.stop();BD.snd.a.close();BD.snd=null}}catch(e){}}
+function resetDream(){const c=BD.c;c.ban.position.set(DX-3.2,0,4);c.ban.rotation.y=Math.PI;c.pj.position.set(DX+.8,0,4);c.pj.rotation.y=Math.PI;c.eg.position.set(DX+3.4,.5,3.6);c.eg.rotation.y=Math.PI;c.eg.visible=true;c.na.position.set(DX-1.6,0,4);c.na.rotation.set(0,Math.PI,0);c.na.visible=true;
+BD.b.forEach(b=>{b.visible=false;b.position.set(DX-60,0,-4)});BD.b[3].rotation.y=-Math.PI/2}
+function endDream(){fd.style.opacity=1;const f=$('fl');f.style.opacity=0;f.style.background='#f00';BD.on=0;BD.lt=0;BD.G.visible=false;rainSnd(0);shake=0;sc.background=new T.Color(0x05050a);sc.fog=new T.Fog(0x05050a,3,26);
+fadeTo(0,1300,()=>{S.go=1;say('...Huh? It was just a dream. But it felt so real.',4500,'Tommy')})}
+function startBusDream(){if(BD.done)return;BD.done=1;S.go=0;shake=0;
+fadeTo(1,700,()=>{BD.on=1;BD.lt=0;BD.G.visible=true;sc.background=new T.Color(0x0b1019);sc.fog=new T.Fog(0x0b1019,6,55);resetDream();rainSnd(1);
+fadeTo(0,900,()=>chain([
+n=>talk([['Tommy',"It's pouring... where are we?"],['Banan',"Waiting for the bus, sleepy Tommy. It should be here any minute."]],n),
+n=>busGo(BD.b[0],-60,0,2600,'out',n),
+n=>talk([['PB Jelly Man',"Hey... that's the wrong bus."]],()=>busGo(BD.b[0],0,70,2200,'in',()=>{BD.b[0].visible=false;n()})),
+n=>{say('Another bus is coming. This one is covered in dirt.',3200,'Tommy');busGo(BD.b[1],-60,0,3200,'out',n)},
+n=>{const e=BD.c.eg;anim(700,k=>{e.position.y=.5*(1-k)},()=>{mvTo(e,DX+2.8,-2.4,3200,()=>{e.visible=false;groan(90,.9);shake=.2;wait(400,()=>{shake=0});n()},true);wait(1300,()=>say('Hey, where are you going?',2500,'PB Jelly Man'))})},
+n=>busGo(BD.b[1],0,90,1700,'in',()=>{BD.b[1].visible=false;n()}),
+n=>{shake=.12;talk([['Banan',"THE BIRD GOT KIDNAPPED!! WHAT ARE WE GONNA DO?!"],['Tommy',"Eggy!!"]],()=>{shake=0;n()})},
+n=>{mvTo(BD.c.na,DX+1.5,-5,3400,n,true);wait(1200,()=>say('Nanab? Where are you going?!',2600,'PB Jelly Man'))},
+n=>{let hit=0;const nn=BD.c.na;say('Nanab, get out of the road!!',2000,'Banan');busGo(BD.b[2],-50,60,1700,'lin',()=>{BD.b[2].visible=false;n()},k=>{if(!hit&&k>.427){hit=1;shake=.4;groan(200,.5);anim(1000,kk=>{nn.position.set(DX+1.5+kk*22,Math.sin(kk*Math.PI)*6,-5-kk*4);nn.rotation.z=kk*14},()=>{nn.visible=false});wait(500,()=>{shake=0})}})},
+n=>talk([['Banan',"NANAB!!!"],['PB Jelly Man',"No... no, no, no..."]],n),
+n=>{const bn=BD.c.ban,b=BD.b[3];anim(600,k=>{bn.rotation.y=Math.PI*(1-k)});b.visible=true;b.position.set(DX,0,-70);let f1=0;
+wait(500,()=>say('Is that the correct bus from the start?',3400,'Banan'));
+anim(3600,k=>{b.position.z=-70+75*k*k;if(!f1&&k>.94){f1=1;const f=$('fl');f.style.background='#fff';f.style.opacity=1;shake=.5;groan(250,.8)}},()=>wait(500,endDream))}
+]))})}
+function busTick(c){if(!BD.on)return;const t=performance.now()/1000,dt=Math.min(.05,t-(BD.lt||t));BD.lt=t;
+const rp=BD.rain.geometry.attributes.position,a=rp.array;for(let i=1;i<a.length;i+=3){a[i]-=22*dt;if(a[i]<0)a[i]+=14}rp.needsUpdate=true;
+const sh=shake?(Math.random()-.5)*shake:0;c.position.set(DX+Math.sin(t*.4)*.1+sh,1.25+sh,DZ+7.5);c.rotation.set(-.04,0,0,'YXZ');
+if(t>BD.th){BD.th=t+6+Math.random()*6;BD.DL.intensity=2.2;groan(55,1.4);setTimeout(()=>{BD.DL.intensity=.7},120)}}
+function buildBus(){
+const G=new T.Group();G.visible=false;sc.add(G);BD.G=G;
+const tpg=(...a)=>{tp(...a);const m=sc.children[sc.children.length-1];sc.remove(m);G.add(m)};
+A6(G,BX(500,.04,500),0x0c0c10,DX,-.06,DZ);A6(G,BX(260,.1,14),0x16161c,DX,-.05,DZ-5);A6(G,BX(260,.25,14),0x2a2a30,DX,.125,DZ+8);
+for(let i=-12;i<12;i++)A6(G,BX(3,.02,.25),0xd9d27a,DX+i*10,.02,DZ-5);
+A6(G,BX(8,.15,3.6),0x3a4048,DX,3.2,DZ+3.5);[[-3.8,2],[3.8,2],[-3.8,5],[3.8,5]].forEach(p=>A6(G,CY(.08,.08,3.2),0x3a4048,DX+p[0],1.6,DZ+p[1]));
+A6(G,BX(2.8,.12,.7),0x5a4a3a,DX+3.4,.45,DZ+3.6);[2.4,4.4].forEach(x=>A6(G,BX(.1,.45,.5),0x3a3a3a,DX+x,.22,DZ+3.6));
+A6(G,CY(.1,.12,6),0x333333,DX+6.5,3,DZ+1);const lm=new T.Mesh(new T.SphereGeometry(.3,8,6),new T.MeshBasicMaterial({color:0xffe9a0}));lm.position.set(DX+6.5,6,DZ+1);G.add(lm);
+const sl=new T.PointLight(0xffdd99,1.3,30);sl.position.set(DX+6.5,5.6,DZ+1);G.add(sl);BD.DL=new T.AmbientLight(0x8899bb,.7);G.add(BD.DL);
+tpg('BUS STOP',2,.6,DX+5,2.4,DZ+2.2,0,'#1a3a6a','#ffffff',40);
+BD.c={ban:ch('banan',0xe23030).g,pj:ch('pbj',0x8b5a2b).g,eg:ch('egg',0xfffbe8).g,na:MK('nanab')};BD.c.na.scale.setScalar(1.4);Object.keys(BD.c).forEach(k=>G.add(BD.c[k]));
+BD.b=[mkBus(0xf2c230,0),mkBus(0x3d4a35,1),mkBus(0x4a2f2f,1),mkBus(0x2f3a4a,1)];BD.b.forEach(b=>{b.visible=false;G.add(b)});
+const N=700,pa=new Float32Array(N*3);for(let i=0;i<N;i++){pa[i*3]=DX-28+Math.random()*56;pa[i*3+1]=Math.random()*14;pa[i*3+2]=DZ-22+Math.random()*34}
+const rg=new T.BufferGeometry();rg.setAttribute('position',new T.BufferAttribute(pa,3));BD.rain=new T.Points(rg,new T.PointsMaterial({color:0xaac4ee,size:.13,transparent:true,opacity:.75}));G.add(BD.rain);
+resetDream();
+// the dream trigger: sleeping PB Jelly Man in the lift
+ia(-7.4,.9,-9.2,3.4,'p',()=>!BD.done&&X.s>=1&&X.s<4,()=>'Touch the sleeping PB Jelly Man',startBusDream);
+// secret teal keycard hidden behind the lift
+const kT=kc(-10.8,.12,-10.8,0x00e5c8);
+ia(-10.8,.15,-10.8,2.4,'p',()=>!BD.key,()=>'Take the secret teal keycard',()=>{BD.key=1;kT.visible=false;say('A secret teal keycard! What does it open?',3200,'Tommy')});
+// secret room (closet) in the corner of the first room
+wl(-1.7,8,-1.7,12);wl(-1.85,8,-.2,8);wl(2.2,8,4,8);
+const dS6=door(1,8,2.4,'z',0x5a5f6c);tp('?',.8,.8,1,1.6,7.82,Math.PI,'#5a5f6c','#00e5c8',60);
+ia(1,1.4,7.1,3,'p',()=>!dS6.open,()=>BD.key?'Open the secret door (teal keycard)':'Locked (secret card reader)',()=>{if(!BD.key)return say('A hidden card reader... I need a secret keycard.',3000,'Tommy');openD(dS6);say('A secret room!',2500,'Tommy')});
+const cl=new T.PointLight(0xffdd99,.9,9);cl.position.set(1,2.8,10);sc.add(cl);tp('DAD\'S SECRET ROOM',2.4,.5,1,2.7,11.6,Math.PI,'#2a1a10','#ffd21f',30);
+[[-.7,9],[.6,9],[1.9,9],[3.2,9],[-.7,10.8],[.6,10.8],[1.9,10.8],[3.2,10.8]].forEach(([x,z],i)=>{bx(.5,.7,.5,x,.35,z,0x6b4a3a);bx(.4,.02,.3,x,.71,z,0xf4e6c4);
+ia(x,.9,z,1.2,'p',()=>1,()=>'Read note '+(i+1)+'/8 from Dad',()=>{if(!BD.read[i]){BD.read[i]=1;BD.n++}bShow(NT6[i],'Dad');if(BD.n==8&&!BD.all){BD.all=1;wait(600,()=>say("That's all 8 of Dad's notes. I'll keep going, Dad.",4000,'Tommy'))}})})}
+const _s6=startCh6;
+window.startCh6=function(){_s6();buildBus();BD.done=0;BD.key=0;BD.n=0;BD.all=0;BD.read=[0,0,0,0,0,0,0,0];BD.on=0;
+const old=R.render;R.render=(s,c)=>{busTick(c);old(s,c)};
+wait(22000,()=>{if(!BD.done&&X.s>=1&&X.s<4&&S.go)say('PB Jelly Man is dreaming... maybe I can peek into it?',5000,'Tommy')})};  
 })();
 </script></body></html>
