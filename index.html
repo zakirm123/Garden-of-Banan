@@ -961,4 +961,31 @@ window.startCh6=function(){_s6();buildBus();BD.done=0;BD.key=0;BD.n=0;BD.all=0;B
 const old=R.render;R.render=(s,c)=>{busTick(c);old(s,c)};
 wait(22000,()=>{if(!BD.done&&X.s>=1&&X.s<4&&S.go)say('PB Jelly Man is dreaming... maybe I can peek into it?',5000,'Tommy')})};  
 })();
+/* ===== CHAPTER SELECT MENU ===== */
+(function(){
+const CHS=[
+{n:1,t:'The Preschool',s:'Little Tommy wakes up in Garden of Banan',i:'🍌',c:['#ff3b30','#7a0a10']},
+{n:2,t:'The Abyss',s:'Mr Large Lime Man, the spider maze and Banan',i:'🕷️',c:['#7b4bd6','#1d0f4a']},
+{n:3,t:'The Sectors',s:'The Kleaner, PB Jelly Man and the dream world',i:'🥜',c:['#8b5a2b','#3a210d']},
+{n:4,t:'The Kingdom',s:'Sheriff Breadstick, Queen Kangaroo and Kittysaurus',i:'👑',c:['#ffb21f','#7a4a00']},
+{n:5,t:'???',s:'Coming soon',i:'🔒',c:['#555','#222'],lock:1},
+{n:6,t:'The Dark Floor',s:'Sir Pizza and the Naughty Ones',i:'🍕',c:['#2faa4a','#0a3a1a']}];
+const st=document.createElement('style');
+st.textContent='#cm{position:fixed;inset:0;z-index:8;background:radial-gradient(ellipse at 50% 20%,#4a2a8a,#241047 55%,#0a0a14);overflow-y:auto;touch-action:pan-y;-webkit-overflow-scrolling:touch;padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(24px + env(safe-area-inset-bottom,0px));box-sizing:border-box;font-family:system-ui,sans-serif;color:#fff;text-align:center}#cm h1{margin:6px 0 2px;font:900 clamp(30px,8vw,56px) Impact,"Arial Black",sans-serif;letter-spacing:3px;color:#ff3b30;text-shadow:0 0 0 #ffd21f,3px 3px 0 #ffd21f,-3px -3px 0 #ffd21f,3px -3px 0 #ffd21f,-3px 3px 0 #ffd21f,0 6px 14px #000}#cm .sb{margin:0 0 14px;font-size:15px;opacity:.85}#cm img{max-width:min(340px,80%);display:none;margin:0 auto 6px}#cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px;max-width:900px;margin:0 auto}.cc{display:flex;align-items:center;gap:14px;text-align:left;border:3px solid #ffffff55;border-radius:18px;padding:14px;cursor:pointer;box-shadow:0 8px 20px #0008;transition:transform .12s;-webkit-user-select:none;user-select:none}.cc:active{transform:scale(.97)}.cc.lk{opacity:.45;cursor:default}.ci{font-size:46px;width:74px;height:74px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#ffffff26;flex:none}.cn{font-size:12px;letter-spacing:3px;opacity:.85;font-weight:700}.ct{font:900 24px Impact,"Arial Black",sans-serif;letter-spacing:1px;margin:2px 0}.cs{font-size:13px;opacity:.9;line-height:1.25}.cp{margin-left:auto;font-weight:900;background:#ffd21f;color:#241047;border-radius:10px;padding:8px 12px;font-size:14px;flex:none}#cb{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:7;background:#000a;color:#fff;border:2px solid #fff6;border-radius:20px;padding:6px 14px;font:700 13px system-ui;cursor:pointer;display:none}';
+document.head.appendChild(st);
+const m=document.createElement('div');m.id='cm';
+m.innerHTML='<img id="cl" src="garden-of-banan-logo.svg" alt="Garden of Banan"><h1 id="ch">GARDEN OF BANAN</h1><p class="sb">Pick a chapter. Every chapter is unlocked!</p><div id="cg"></div>';
+document.body.appendChild(m);
+const li=m.querySelector('#cl');li.onload=()=>{li.style.display='block';m.querySelector('#ch').style.display='none'};
+const grid=m.querySelector('#cg'),btn=document.createElement('div');
+btn.id='cb';btn.textContent='☰ Chapters';document.body.appendChild(btn);
+btn.onclick=()=>{if(confirm('Go back to chapter select? Your progress in this chapter will reset.'))location.reload()};
+['touchmove','touchend'].forEach(ev=>m.addEventListener(ev,e=>e.stopPropagation(),{passive:true}));
+function play(n){m.style.display='none';btn.style.display='block';const o=document.getElementById('ov');
+if(n==1){if(o.onpointerdown)o.onpointerdown();return}
+o.style.display='none';o.onpointerdown=null;try{speechSynthesis.cancel()}catch(e){}
+window['startCh'+n]()}
+CHS.forEach(c=>{const d=document.createElement('div');d.className='cc'+(c.lock?' lk':'');d.style.background='linear-gradient(135deg,'+c.c[0]+','+c.c[1]+')';
+d.innerHTML='<div class="ci">'+c.i+'</div><div><div class="cn">CHAPTER '+c.n+'</div><div class="ct">'+c.t+'</div><div class="cs">'+c.s+'</div></div>'+(c.lock?'':'<div class="cp">PLAY</div>');
+if(!c.lock)d.addEventListener('click',()=>play(c.n));grid.appendChild(d)})})();
 </script></body></html>
