@@ -1173,6 +1173,37 @@ RAW(s,c);$('obj').textContent='Objective: '+obj7();
 $('inv').textContent=[X.r2?'Remote 2.0':'Drone',X.rope?'Rope':'',X.ham?'Hammer':'',X.paper?'Drawing':''].filter(Boolean).join(' | ')};
 intro()}
 window.startCh7=startCh7;
+/* ===== SECRET KEYCARD ROOM (Chapter 7) ===== */
+const SK={key:0,read:[0,0,0,0,0,0],n:0};
+const SN7=["Note 1/6\n\nTommy,\n\nIf you found this room, you are very sneaky. Good. I built this lab as a backup plan when the Cityzaknon guards started watching me.\n\n- Dad","Note 2/6\n\nTommy,\n\nSyringeon is not truly evil. He is scared. He lost patients on his table long ago, and since then he repurposes anyone who makes a mistake. Be patient with him.\n\n- Dad","Note 3/6\n\nTommy,\n\nThe scepter was built in three pieces: a handle, an orb and a crystal. The green crystal is the dangerous one. Never let Sir Pizza hold all three.\n\n- Dad","Note 4/6\n\nTommy,\n\nMr Large Lime Man was made by Syringeon's own scientists. He roars when he is sad, not when he is angry. Try to remember that.\n\n- Dad","Note 5/6\n\nTommy,\n\nThe mayor statue rule was written in the dark by someone who has long been forgotten. Nobody knows why. Follow it anyway. The guards are watching.\n\n- Dad","Note 6/6\n\nTommy,\n\nWhatever you find behind the family mural, trust the one who has been waiting the longest.\n\nI love you, buddy.\n- Dad"];
+const sn7=t=>{S.note=1;$('nt').textContent=t+'\n\n(tap or press E to close)';$('nt').style.display='block';voice(t.replace(/\n+/g,' '),'Dad')};
+function secret7(){
+SK.key=0;SK.n=0;SK.read=[0,0,0,0,0,0];
+// the secret violet keycard, hidden on a crate in the long tunnel
+bx(1.2,.7,1.2,165,.35,2.6,0x4a4a58);const kv=kc(165,.74,2.6,0xc77dff);
+const gl=new T.PointLight(0xc77dff,.8,6);gl.position.set(165,1.5,2.6);sc.add(gl);
+ia(165,.8,2.6,2.8,'p',()=>!SK.key,()=>'Take the secret violet keycard',()=>{SK.key=1;kv.visible=false;gl.visible=false;say('A secret violet keycard! What does it open?',3500,'Tommy')});
+// cut a doorway into the alley's south wall
+const wm=sc.children.find(o=>o.isMesh&&o.geometry&&o.geometry.parameters&&o.geometry.parameters.width==26&&Math.abs(o.position.z-8)<.01&&Math.abs(o.position.x-677)<.01);
+if(wm)sc.remove(wm);
+const ci=C.findIndex(c=>Math.abs(c.x0-664)<.01&&Math.abs(c.x1-690)<.01&&Math.abs(c.z0-7.85)<.01);
+if(ci>=0)C.splice(ci,1);
+wl(664,8,675.5,8);wl(678.5,8,690,8);
+const dS=door(677,8,3,'z',0x8a5ad6);
+tp('?',.8,.8,677,1.5,7.82,Math.PI,'#3a3a4a','#c77dff',60);
+ia(677,1.4,6.6,3,'p',()=>!dS.open,()=>SK.key?'Open the secret door (violet keycard)':'Locked (secret card reader)',()=>{if(!SK.key)return say('A hidden card reader... I need a secret keycard.',3000,'Tommy');openD(dS);say('A secret room!',2500,'Tommy')});
+// Dad's hidden lab
+pl(20,14,677,15,0,0x2a1a3a);pl(20,14,677,15,3.5,0x1a1024,Math.PI/2);
+W(667,8,667,22,0x6a4a8a);W(687,8,687,22,0x6a4a8a);W(667,22,687,22,0x6a4a8a);
+lp(672,14);lp(682,14);const vl=new T.PointLight(0xc77dff,.9,16);vl.position.set(677,2.8,15);sc.add(vl);
+tp("DAD'S HIDDEN LAB",3,.6,677,2.7,21.8,Math.PI,'#241047','#ffd21f',32);
+[[671,12],[677,12],[683,12],[671,17],[677,17],[683,17]].forEach(([x,z],i)=>{bx(.8,.8,.8,x,.4,z,0x6b4a3a);bx(.4,.02,.3,x,.81,z,0xf4e6c4);
+ia(x,.9,z,2.2,'p',()=>1,()=>'Read note '+(i+1)+'/6 from Dad',()=>{if(!SK.read[i]){SK.read[i]=1;SK.n++}sn7(SN7[i]);if(SK.n==6&&!SK.all){SK.all=1;wait(700,()=>say("That's all of Dad's notes. I'll find you, Dad.",4000,'Tommy'))}})});
+bx(1,.8,1,677,.4,20.6,0x6b4a3a);const sk=bx(.7,.12,.22,677,.86,20.6,0x5a2a10);const sw=bx(.72,.13,.1,677,.86,20.6,0x2a4ad6);
+ia(677,.9,20.6,2.4,'p',()=>sk.visible,()=>'Take the Snickers bar',()=>{sk.visible=false;sw.visible=false;say("A Snickers bar! Dad always said to keep one handy. I'm not hungry anymore!",4500,'Tommy')})}
+SK.all=0;
+const _s7=window.startCh7;
+window.startCh7=function(){SK.all=0;_s7();secret7()};  
 /* chapter select banner */
 (function(){const g=document.getElementById('cg');if(!g)return;const d=document.createElement('div');d.className='cc';d.style.background='linear-gradient(135deg,#d6246e,#3a0a2a)';d.innerHTML='<div class="ci">💉</div><div><div class="cn">CHAPTER 7</div><div class="ct">Cityzaknon</div><div class="cs">Syringeon, the city and the green gorilla</div></div><div class="cp">PLAY</div>';d.addEventListener('click',()=>{document.getElementById('cm').style.display='none';const b=document.getElementById('cb');if(b)b.style.display='block';const o=document.getElementById('ov');o.style.display='none';o.onpointerdown=null;try{speechSynthesis.cancel()}catch(e){}window.startCh7()});g.appendChild(d)})();
 })();
