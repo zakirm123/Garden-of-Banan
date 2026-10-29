@@ -1253,4 +1253,27 @@ bk.querySelector('#bx').onclick=()=>bk.style.display='none';
 const m=document.getElementById('cm');
 if(m){const b=document.createElement('div');b.id='bo';b.textContent='📖 Characters';b.onclick=open;m.appendChild(b)}
 })();  
+/* ===== DEATH SCREEN ===== */
+(function(){
+const d=document.createElement('div');d.id='dd';
+d.style.cssText='position:fixed;inset:0;z-index:20;background:#000;display:none;align-items:center;justify-content:center;text-align:center;padding:28px;box-sizing:border-box;color:#fff;font:700 clamp(20px,5.2vw,34px) system-ui,sans-serif;line-height:1.4;cursor:pointer;touch-action:none;-webkit-user-select:none;user-select:none';
+d.innerHTML='<div><div style="font-size:clamp(40px,12vw,76px);margin-bottom:14px">💀</div>Press E or Tap Anywhere on the screen to revive, time to find your dad!</div>';
+document.body.appendChild(d);
+let dead=0,shown=0,px=P.x,pz=P.z;
+function revive(){
+if(!dead||!shown||performance.now()-shown<400)return;
+dead=0;shown=0;d.style.display='none';
+const f=$('fl');f.style.opacity=0;f.textContent='';f.style.background='#f00';shake=0;
+try{speechSynthesis.cancel()}catch(e){}
+px=P.x;pz=P.z;S.go=1}
+d.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();revive()});
+addEventListener('keydown',e=>{if(dead&&(e.code=='KeyE'||e.code=='Enter')){e.preventDefault();e.stopImmediatePropagation();revive()}},true);
+function loop(){requestAnimationFrame(loop);
+if(dead){S.go=0;return}
+if(S.go&&!S.end&&Math.hypot(P.x-px,P.z-pz)>5){
+dead=1;S.go=0;S.dr=0;
+if(S.note)closeNote();
+setTimeout(()=>{if(dead){d.style.display='flex';shown=performance.now()}},650)}
+px=P.x;pz=P.z}
+requestAnimationFrame(loop)})();  
 </script></body></html>
