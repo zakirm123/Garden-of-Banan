@@ -1207,4 +1207,50 @@ window.startCh7=function(){SK.all=0;_s7();secret7()};
 /* chapter select banner */
 (function(){const g=document.getElementById('cg');if(!g)return;const d=document.createElement('div');d.className='cc';d.style.background='linear-gradient(135deg,#d6246e,#3a0a2a)';d.innerHTML='<div class="ci">💉</div><div><div class="cn">CHAPTER 7</div><div class="ct">Cityzaknon</div><div class="cs">Syringeon, the city and the green gorilla</div></div><div class="cp">PLAY</div>';d.addEventListener('click',()=>{document.getElementById('cm').style.display='none';const b=document.getElementById('cb');if(b)b.style.display='block';const o=document.getElementById('ov');o.style.display='none';o.onpointerdown=null;try{speechSynthesis.cancel()}catch(e){}window.startCh7()});g.appendChild(d)})();
 })();
+/* ===== CHARACTER BOOK ===== */
+(function(){
+const ST={a:['ALIVE','#2faa4a'],d:['DEAD','#d62a2a'],n:['NAUGHTIFIED','#8a3ad6'],u:['UNKNOWN','#d6a21f']};
+const CH=[
+['Little Tommy','👦','The player. A kid from the surface.','a',[1,2,3,4,6,7],'Survived every chapter so far.'],
+['Dad','👨','Tommy\'s dad. Leaves notes all over the floors.','u',[1,2,3,7],'Still missing, somewhere far below.'],
+['Banan','🍌','Red banana mascot. Allies and betrays.','a',[1,2,3,4,6,7],'Held off the Naughty Ones in Chapter 6 and survived.'],
+['Bananaleena','🍌','Yellow banana teacher with a pink bow.','n',[1,2,3,6,7],'Taken by the Naughty Ones. Now runs the pop exam.'],
+['Mr Large Lime Man','🦍','Huge green gorilla. Lonely and very strong.','u',[1,2,3,4,7],'Ate the scepter. Everything exploded.'],
+['Eggy Bird','🥚','Hungry white egg bird.','n',[1,2,6,7],'Kidnapped in the bus dream. Naughtified.'],
+['Baby Eggy Bird','🐣','A tiny chick. Mutated in the DNA pot.','u',[4,6],'Last seen as the Mutated Eggy Baby Bird.'],
+['PB Jelly Man','🥜','Brown sandwich man. Shows dreams.','a',[1,2,3,4,6,7],'Captured by Syringeon. Still shows dreams.'],
+['Nanab','🕷️','Yellow spider. Official name: Nanab.','n',[2,3,4,6],'Mutated with PB Jelly Man DNA in Chapter 6.'],
+['Kleaner','🧹','Cleaning robot in the cafeteria sector.','u',[3],'Gave out the purple keycard.'],
+['Sheriff Breadstick','🍞','Queen\'s old bodyguard, now a bounty hunter.','a',[4,6,7],'Grieving after Carroty\'s death.'],
+['Queen Kangaroo','🦘','Ruler of the Kingdom.','u',[4],'Last seen laughing at the Jester\'s joke.'],
+['Carroty Jester','🥕','Funny carrot. Hungry and sad.','d',[4,6,7],'Passed away after one last joke in Chapter 7.'],
+['Kittysaurus','🦖','Purple kitty T-Rex.','d',[4,6,7],'Mouth ripped open by Mr Large Lime Man.'],
+['Sir Pizza','🍕','The first mascot, now leader of the Naughty Ones.','u',[6,7],'Punched five times, then the scepter was eaten.'],
+['The Naughty Ones','😈','Dark minions that hate light.','a',[6,7],'Sir Pizza\'s army.'],
+['Nanny','🐷','A pig. Upgraded your drone.','u',[6],'Hasn\'t been seen since Chapter 6.'],
+['Syringeon','💉','Pink mayor-surgeon with four arms.','a',[7],'Punched you for peeling the mural: doctor\'s orders.'],
+['Cityzaknon Surgeon','🔨','Surgeon who keeps mixing hammers up with scissors.','u',[7],'Got repurposed.'],
+['Nanableena','🕷️','Black spider with a green bow.','d',[7],'Ate the DNA barrel, exploded and fell into the abyss.'],
+['Mini Nanabs','🕸️','Tiny spiders everywhere.','a',[7],''],
+['Cityzaknon Citizens','👽','Aliens living in the city.','a',[7],'Includes the artist and the bartender.'],
+['Evil Banan','💙','PB Jelly Man\'s dream version of Banan.','u',[7],'Appears in the airplane dream.'],
+['???','🔵','A blue Banan. Hidden behind the family mural.','u',[7],'Name hidden until the reveal.']];
+const st=document.createElement('style');
+st.textContent='#bk{position:fixed;inset:0;z-index:9;background:radial-gradient(ellipse at 50% 10%,#3a2370,#171031 60%,#06060c);display:none;overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;padding:calc(14px + env(safe-area-inset-top,0px)) 14px calc(24px + env(safe-area-inset-bottom,0px));box-sizing:border-box;font-family:system-ui,sans-serif;color:#fff}#bk h2{margin:0 0 8px;text-align:center;font:900 30px Impact,"Arial Black",sans-serif;letter-spacing:2px;color:#ffd21f}.bt{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:6px 0 10px}.bt b{padding:7px 12px;border-radius:18px;background:#ffffff22;border:2px solid #ffffff44;font-size:13px;cursor:pointer;user-select:none}.bt b.on{background:#ffd21f;color:#241047;border-color:#ffd21f}.bs{text-align:center;font-size:12px;opacity:.85;margin-bottom:10px}#bg{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;max-width:900px;margin:0 auto}.bc{display:flex;gap:10px;align-items:center;background:#ffffff14;border:2px solid #ffffff2a;border-radius:14px;padding:10px}.bi{font-size:34px;width:54px;height:54px;border-radius:50%;background:#ffffff22;display:flex;align-items:center;justify-content:center;flex:none}.bn{font-weight:800;font-size:15px}.bd{font-size:12px;opacity:.85;line-height:1.25}.bp{display:inline-block;margin-top:4px;padding:2px 8px;border-radius:9px;font-size:10px;font-weight:800;letter-spacing:1px}.bm{font-size:11px;opacity:.7;margin-top:3px;font-style:italic}#bx{position:sticky;bottom:0;display:block;margin:14px auto 0;padding:10px 26px;border:0;border-radius:18px;background:#ffd21f;color:#241047;font:800 15px system-ui;cursor:pointer}#bo{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));right:12px;z-index:9;padding:7px 14px;border-radius:18px;border:2px solid #ffffff66;background:#000a;color:#fff;font:700 13px system-ui;cursor:pointer}';
+document.head.appendChild(st);
+const bk=document.createElement('div');bk.id='bk';bk.innerHTML='<h2>CHARACTER BOOK</h2><div class="bt" id="bt"></div><div class="bs" id="bs"></div><div id="bg"></div><button id="bx">CLOSE</button>';document.body.appendChild(bk);
+['touchmove','touchend'].forEach(e=>bk.addEventListener(e,ev=>ev.stopPropagation(),{passive:true}));
+let tab=0;const tabs=['All',1,2,3,4,6,7];
+function draw(){const L=CH.filter(c=>tab==0||c[4].includes(tab)),bt=bk.querySelector('#bt');bt.innerHTML='';
+tabs.forEach(t=>{const b=document.createElement('b');b.textContent=t==='All'?'All':'Chapter '+t;if((t==='All'&&tab==0)||t==tab)b.className='on';b.onclick=()=>{tab=t==='All'?0:t;draw()};bt.appendChild(b)});
+const n={a:0,d:0,n:0,u:0};L.forEach(c=>n[c[3]]++);
+bk.querySelector('#bs').textContent=L.length+' characters  |  Alive '+n.a+'  |  Dead '+n.d+'  |  Naughtified '+n.n+'  |  Unknown '+n.u;
+const g=bk.querySelector('#bg');g.innerHTML='';
+L.forEach(c=>{const d=document.createElement('div');d.className='bc';const s=ST[c[3]],q=c[0]=='???';
+d.innerHTML='<div class="bi" style="'+(q?'background:#2f6bff55;':'')+'">'+c[1]+'</div><div><div class="bn">'+(q?'??? ???':c[0])+'</div><div class="bd">'+c[2]+'</div><span class="bp" style="background:'+s[1]+'">'+s[0]+'</span>'+(c[5]?'<div class="bm">'+c[5]+'</div>':'')+'</div>';g.appendChild(d)})}
+const open=()=>{draw();bk.style.display='block'};
+bk.querySelector('#bx').onclick=()=>bk.style.display='none';
+const m=document.getElementById('cm');
+if(m){const b=document.createElement('div');b.id='bo';b.textContent='📖 Characters';b.onclick=open;m.appendChild(b)}
+})();  
 </script></body></html>
