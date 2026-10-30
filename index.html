@@ -1278,56 +1278,99 @@ px=P.x;pz=P.z}
 requestAnimationFrame(loop)})(); 
 /* ===== HALLOWEEN EDITION ===== */
 (function(){
-Object.assign(VP,{'Narrator':[.4,.78],'Citizen':[1.2,1]});
+Object.assign(VP,{'Narrator':[.4,.78],'Citizen':[1.2,1],'Daddy Bird':[.28,.68]});
 const hs=document.createElement('style');
-hs.textContent='#cm{background:radial-gradient(ellipse at 50% 12%,#8a3f00,#2a0f3a 55%,#08050e)!important}#cm h1{color:#ff8a1f!important}.cc{border-color:#ff9a2a99!important}#obj,#inv{color:#ff9a2a!important}#obj,#inv,#pr,#sub{z-index:2}#hv{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(60,10,90,.4) 100%)}#hb{position:fixed;left:12px;top:38%;z-index:6;width:50px;height:50px;border-radius:50%;background:#ff7a1acc;border:2px solid #ffd21f;font-size:28px;display:none;align-items:center;justify-content:center;touch-action:none;user-select:none;-webkit-user-select:none;box-shadow:0 0 14px #ff7a1a}#trb{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));left:12px;z-index:9;padding:7px 14px;border-radius:18px;border:2px solid #ff9a2a;background:#000a;color:#ffb35a;font:700 13px system-ui;cursor:pointer}';
+hs.textContent='#cm{background:radial-gradient(ellipse at 50% 12%,#8a3f00,#2a0f3a 55%,#08050e)!important}#cm h1{color:#ff8a1f!important}.cc{border-color:#ff9a2a99!important}#obj,#inv{color:#ff9a2a!important}#obj,#inv,#pr,#sub{z-index:2}#hv{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(60,10,90,.4) 100%)}#trb{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));left:12px;z-index:9;padding:7px 14px;border-radius:18px;border:2px solid #ff9a2a;background:#000a;color:#ffb35a;font:700 13px system-ui;cursor:pointer}#ft{position:fixed;left:50%;bottom:calc(30px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;max-width:84%;padding:12px 18px;border-radius:14px;background:#0a1a3acc;border:2px solid #3a8dff;color:#cfe4ff;font:600 15px/1.4 system-ui;text-align:center;display:none}#fm{display:none;margin:18px auto 0;font-size:26px;opacity:.55;cursor:pointer;text-align:center;filter:drop-shadow(0 0 6px #3a8dff)}';
 document.head.appendChild(hs);
 const hv=document.createElement('div');hv.id='hv';document.body.appendChild(hv);
-/* ---- spooky effects that follow the player ---- */
+/* ---- spooky effects ---- */
 const HG=new T.Group(),HL=new T.PointLight(0xff7a1a,.35,14);HL.position.set(0,2.4,0);HG.add(HL);
 const bats=[];for(let i=0;i<8;i++){const b=new T.Group(),mt=new T.MeshBasicMaterial({color:0x07030c,side:2}),wa=new T.Mesh(new T.PlaneGeometry(.55,.3),mt),wb=new T.Mesh(new T.PlaneGeometry(.55,.3),mt);wa.position.x=-.3;wb.position.x=.3;b.add(wa,wb,new T.Mesh(new T.SphereGeometry(.09,6,5),mt));b.userData={r:3+Math.random()*4,a:Math.random()*6.28,s:.4+Math.random()*.5,h:1.5+Math.random()*1.6,f:10+Math.random()*6,wa,wb};HG.add(b);bats.push(b)}
-const N=90,ea=new Float32Array(N*3);for(let i=0;i<N;i++){ea[i*3]=(Math.random()-.5)*16;ea[i*3+1]=Math.random()*3.5;ea[i*3+2]=(Math.random()-.5)*16}
-const eg=new T.BufferGeometry();eg.setAttribute('position',new T.BufferAttribute(ea,3));HG.add(new T.Points(eg,new T.PointsMaterial({color:0xff9a2a,size:.09,transparent:true,opacity:.8})));
-function addHW(){sc.add(HG)}
-window._ch=1;addHW();
-[2,3,4,6,7].forEach(n=>{const k='startCh'+n,f=window[k];if(!f)return;window[k]=function(){window._ch=n;f.apply(this,arguments);addHW()}});
-/* ---- secret voicelines ---- */
-const SV={
-1:[['Banan',"Happy Halloween, Tommy! Sharing is caring... so share your candy."],['Bananaleena',"No costumes in class, little one. Except ghosts. Ghosts get extra credit."],['Eggy Bird',"Trick or treat! I accept eggs. Only eggs."],['Mr Large Lime Man',"Candy... GRAAAH... candy..."],['Tommy',"Dad said never to take candy from strangers. These strangers are bananas."]],
-2:[['Banan',"I'm stuck, but at least I'm in costume. I'm a stuck banana! Hehehe."],['Mr Large Lime Man',"Boo... Large Lime... scary... yes?"],['Bananaleena',"Class is dismissed for trick or treating. But the answers still matter."],['Drone',"Bzzt! Boo! Did I scare you?"],['Dad',"If you hear scary music, it's just the elevator. Probably."]],
-3:[['Kleaner',"Beep boop. Candy wrappers detected. Disgusting. Beep."],['PB Jelly Man',"Dreams are just tricks and treats. Mostly tricks."],['Nanab',"Nanab no scary. Nanab just spider."],['Bananaleena',"Doll rules still apply on Halloween. Do not move."],['Banan',"I hit you once. I'm sorry. Here, have a candy."]],
-4:[['Sheriff Breadstick',"Halloween is not a crime. Carrying candy without a permit, however..."],['Queen Kangaroo',"I have decreed that every citizen must wear a pumpkin hat today."],['Carroty Jester',"Why did the skeleton stay home? He had no body to go with! Hehehe!"],['Kittysaurus',"Rawr... meow? Rawr."],['Nanab',"Spider train go choo choo. Boo."]],
-6:[['Sir Pizza',"Trick or treat, little crumb. I choose... trick."],['Nanny',"Oink oink! Pumpkins make the best snacks."],['Sheriff Breadstick',"Stay in the light, kid. Pumpkins glow. Good."],['Banan',"The Naughty Ones are in costume. Their costume is being scary."],['Carroty Jester',"I'll make you laugh! Knock knock... run."]],
-7:[['Syringeon',"A human on Halloween. Disgusting. Doctor's orders: take your vitamins."],['Sheriff Breadstick',"Carroty would have loved Halloween. Rest well, old friend."],['PB Jelly Man',"Sweet dreams... or should I say sweet screams."],['Citizen',"Trick or treat! We give humans... nothing."],['Nanableena',"Hssss... I'm just a spider in a bow. Happy Halloween."]]};
-const RARE=[['Dad',"Happy Halloween, buddy. I'm so proud of you. Keep going."],['Mr Large Lime Man',"Happy... Halloween... Tommy. Friend."],['Sir Pizza',"Pizza is best served cold... and scary."],['Banan',"Boo! Did I scare you? I'm just a banana. A scary banana."]];
+const NE=90,ea=new Float32Array(NE*3);for(let i=0;i<NE;i++){ea[i*3]=(Math.random()-.5)*16;ea[i*3+1]=Math.random()*3.5;ea[i*3+2]=(Math.random()-.5)*16}
+const egm=new T.BufferGeometry();egm.setAttribute('position',new T.BufferAttribute(ea,3));HG.add(new T.Points(egm,new T.PointsMaterial({color:0xff9a2a,size:.09,transparent:true,opacity:.8})));
+/* ---- new voiceline the FIRST time each character appears in a chapter ---- */
+const NL={
+'Banan':["Happy Halloween, Tommy! I'd offer you a banana, but that feels wrong.","Boo! ...Did that scare you? No? I'll keep practicing.","Don't eat the candy the Naughty Ones hand out. Trust me."],
+'Bananaleena':["Halloween rule: no cheating on the exam. Ghosts included.","I wanted to dress as a witch. The principal said no.","Today's lesson: never open a door in the dark."],
+'Mr Large Lime Man':["Boo?","Pumpkin... smash? No smash. Friend.","Roar means... happy Halloween."],
+'Eggy Bird':["Trick or treat! Do you know a blue bird? Very tall. Very big.","My daddy said never talk to strangers. Hi, stranger!","I had a daddy once. Blue feathers. A very loud laugh."],
+'Baby Eggy':["Peep... daddy?","Peep peep! (That means boo!)","Peep... da... da..."],
+'Naughty Eggy':["Daaa... dyyy...","Wh... where is... blue...?","(the beast hums a tiny lullaby)"],
+'Dad':["Tommy, I left something small and blue on every floor. Don't ask yet.","Halloween was always your favorite. I saved you the good candy.","If you find the feathers, don't tell the others. Not yet."],
+'PB Jelly Man':["Dreams are Halloween for your brain. I'm the pumpkin.","Sweet dreams... or sweet screams. I practiced that.","I once dreamed of a very tall blue bird. He told me not to say anything."],
+'Nanab':["Nanab no scary. Nanab cute.","Spider say boo. Boo.","Nanab eat candy. Candy good."],
+'Kleaner':["Beep. Cobwebs detected. Not mine.","Beep boop. Happy Halloween, organic.","Floor clean. Except the ghost. Beep."],
+'Sheriff Breadstick':["Halloween is a legal holiday. Candy theft is not.","I can't be a ghost, I'm bread. A toast ghost. Hm.","Stay close, kid. Pumpkins glow. Monsters don't."],
+'Queen Kangaroo':["I decree that all pouches shall contain candy.","Bow to the Queen, or at least wear a pumpkin hat.","My pouch holds the best treats. Don't ask what else."],
+'Carroty Jester':["Why don't ghosts lie? You can see right through them!","Knock knock! Who's there? Boo! Boo who? Don't cry, it's a joke!","What do skeletons say before dinner? Bone appetit!"],
+'Kittysaurus':["Rawr. (Meow.)","Rrrrr... pumpkin?","Purr... roar..."],
+'Sir Pizza':["Trick or treat... I choose crust.","The darker the night, the cheesier I get.","Pineapple on Halloween? SPOOKY."],
+'Nanny':["Oink! Pumpkins are my favorite snack.","Oink oink! Treats for good little humans.","Nanny sees all. Nanny oinks."],
+'Syringeon':["Humans in costume. Disgusting. Doctor's orders: wash your hands.","I do not celebrate Halloween. I celebrate surgery.","Do not eat the candy. I tested it. It's delicious."],
+'Nanableena':["Hssss... nice bow, huh?","I'm not scary, I'm elegant. Hsss.","Black cat, black spider. Same energy."],
+'Citizen':["Trick or treat! We give humans... paperwork.","Nobody told me humans celebrate Halloween here.","Happy Halloween, surface dweller."],
+'Naughty One':["Boo...","Dark... hungry... boo...","Candy... light... no..."],
+'Naughty Bananaleena':["Happy Halloween, class. Everyone fails.","I'm a possessed teacher. It's a costume.","Pencils down. Or else."],
+'Naughty Carroty':["I'm still hungry for... candy.","My joke today: YOU.","Hehehe. Halloween is my favorite."],
+'Evil Banan':["Boo.","I'm a costume now. A very mean costume.","Skydive time. Trick or treat."],
+'Artist':["A human on Halloween. What a perfect model.","I draw monsters. You're not one. Probably.","Art is scary. Like Halloween."],
+'Bartender':["Drinks: pumpkin juice, ghost cider, bat milk.","I serve spirits. The scary kind.","Kids sit at the counter. No exceptions."],
+'Drone':["Bzzt! Boo-zzt!","Trick or treat? Bzzt. I accept batteries.","I'm a ghost drone. Bzzt. Boo."],
+'Spider':["Boo... (psst, I'm a plastic spider)"],
+'Surgeon':["Scissors... hammers... Halloween..."],
+'TV':["Citizens, Halloween is canceled. Please scream quietly."]};
+const CHL=[1,2,3,4,6,7];
+let seen={},Q=[],emp=0,pDad=0;
+const subEl=document.getElementById('sub'),ovEl=document.getElementById('ov'),menuEl=document.getElementById('cm');
+new MutationObserver(()=>{const m=subEl.textContent.match(/^([^:]{2,22}): /);if(!m)return;const n=m[1];if(NL[n]&&!seen[n]){seen[n]=1;Q.push(n)}}).observe(subEl,{childList:true,characterData:true,subtree:true});
+function bonus(){const n=Q.shift(),a=NL[n],i=CHL.indexOf(window._ch);say(a[(i<0?0:i)%a.length],5400,n)}
+/* ---- Daddy Bird: never seen, only whispered about (6 hidden blue feathers) ---- */
+let FD=[];try{FD=JSON.parse(localStorage.getItem('gob_feathers')||'[]')}catch(e){}
+const FH=["A blue feather... bird feathers are usually white or yellow. Whose is this?","Another blue feather. Someone has been leaving these on purpose.","There's a tiny tag on it that says 'D.B.'... initials?","All the feathers point the same direction. Like they're trying to tell me something.","It smells like a nest. Someone big has been here.","Six blue feathers. A name is scratched into the quill: 'Daddy Bird'."];
+const FP={1:[-23.2,7],2:[101.5,-199.5],3:[-299,-281.5],4:[-9,-111.5],6:[-11,11],7:[1,11]};
+const ftEl=document.createElement('div');ftEl.id='ft';document.body.appendChild(ftEl);let ftT=0;
+function toast(t){ftEl.textContent=t;ftEl.style.display='block';clearTimeout(ftT);ftT=setTimeout(()=>ftEl.style.display='none',5200)}
+function addFeather(ch){const p=FP[ch];if(!p||FD.includes(ch))return;
+const g=new T.Group(),mt=new T.MeshBasicMaterial({color:0x3a8dff,side:2}),bl=new T.Mesh(new T.PlaneGeometry(.22,.6),mt),q2=new T.Mesh(new T.CylinderGeometry(.012,.012,.7,4),new T.MeshBasicMaterial({color:0xcfe4ff}));bl.rotation.x=-.2;g.add(bl,q2);g.rotation.z=Math.PI/2.6;g.position.set(p[0],.45,p[1]);sc.add(g);
+const L=new T.PointLight(0x3a8dff,.7,5);L.position.set(p[0],1,p[1]);sc.add(L);
+let got=0;ia(p[0],.45,p[1],2.4,'p',()=>!got,()=>'Take the blue feather',()=>{got=1;g.visible=false;L.visible=false;FD.push(ch);try{localStorage.setItem('gob_feathers',JSON.stringify(FD))}catch(e){}const n=FD.length;say(FH[Math.min(n,6)-1],5200,'Tommy');toast('🪶 Blue feather '+n+'/6');if(n==6)setTimeout(()=>say('Daddy Bird... Eggy and the little chick must be his. But where is he?!',6000,'Tommy'),5400)})}
+/* feather in Chapter 1 (the scene already exists) */
+window._ch=1;addFeather(1);
+[2,3,4,6,7].forEach(n=>{const k='startCh'+n,f=window[k];if(!f)return;window[k]=function(){window._ch=n;seen={};Q=[];pDad=0;f.apply(this,arguments);sc.add(HG);addFeather(n)}});
+sc.add(HG);
+/* ---- Character Book card for Daddy Bird ---- */
+function dcard(){const n=FD.length,d=document.createElement('div');d.className='bc dbc';d.innerHTML='<div class="bi" style="background:#3a8dff44">'+(n?'🪶':'❓')+'</div><div><div class="bn">'+(n>=3?'Daddy Bird':'D????? B???')+'</div><div class="bd">'+(n==0?'Nobody has ever seen this one. There are only whispers.':n<6?'Blue. Big. Someone keeps leaving feathers behind... ('+n+'/6)':'Father of Eggy Bird and Baby Eggy Bird. A tall, blue, adult male bird. Not in the game... or is he?')+'</div><span class="bp" style="background:#d6a21f">UNKNOWN</span><div class="bm">'+(n?FH[n-1]:'')+'</div></div>';return d}
+const bkEl=document.getElementById('bk');
+if(bkEl){const g=bkEl.querySelector('#bg');if(g)new MutationObserver(()=>{if(!g.querySelector('.dbc'))g.appendChild(dcard())}).observe(g,{childList:true})}
+/* ---- other secret triggers ---- */
 const IDLE=["It's too quiet... I can hear my own heartbeat.","Is that pumpkin watching me?","Dad, if you can hear me... I'm coming.","Happy Halloween to me, I guess."];
-let last=performance.now(),lx=P.x,lz=P.z,ly=yaw,idle=0,jc=0,jt=0,pj=0,dc=0,pd=0,sp=0,spT=0,up=0,cool=0,tap=0,tapT=0;
-const hb=document.createElement('div');hb.id='hb';hb.textContent='🎃';document.body.appendChild(hb);
+let last=performance.now(),lx=P.x,lz=P.z,ly=yaw,idle=0,jc=0,jt=0,pj=0,dc=0,pd=0,sp=0,spT=0,up=0,cool=0;
 const pick=a=>a[Math.floor(Math.random()*a.length)];
-function sayS(w,t){cool=12;say(t,5200,w)}
-hb.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();if(tapT<=0)tap=0;tap++;tapT=2.5;if(tap>=5){tap=0;const r=pick(RARE);say(r[1],6000,r[0])}else{const r=pick(SV[window._ch]||SV[1]);say(r[1],5000,r[0])}});
 function loop(n){requestAnimationFrame(loop);const dt=Math.min((n-last)/1000,.1);last=n;const t=n/1000;
 HG.position.copy(cam.position);
 bats.forEach((b,i)=>{const d=b.userData;d.a+=d.s*dt;b.position.set(Math.cos(d.a)*d.r,d.h+Math.sin(t*2+i)*.2,Math.sin(d.a)*d.r);b.rotation.y=-d.a;const f=Math.sin(t*d.f)*.7;d.wa.rotation.z=f;d.wb.rotation.z=-f});
-for(let i=0;i<N;i++){ea[i*3+1]+=.35*dt;if(ea[i*3+1]>3.6)ea[i*3+1]=0}eg.attributes.position.needsUpdate=true;
+for(let i=0;i<NE;i++){ea[i*3+1]+=.35*dt;if(ea[i*3+1]>3.6)ea[i*3+1]=0}egm.attributes.position.needsUpdate=true;
 HL.intensity=.32+.1*Math.sin(t*9)+.05*Math.sin(t*23);
-const ov=document.getElementById('ov'),menu=document.getElementById('cm'),ok=S.go&&!S.note&&!S.end&&menu&&menu.style.display=='none';
-hb.style.display=ok&&ov.style.display!='flex'?'flex':'none';
-cool-=dt;tapT-=dt;
+cool-=dt;
+const ok=S.go&&!S.note&&!S.end&&menuEl&&menuEl.style.display=='none'&&ovEl.style.display!='flex';
+if(S.note&&!seen.Dad&&NL.Dad){seen.Dad=1;pDad=1}
+if(pDad&&!S.note){pDad=0;Q.push('Dad')}
+if(Q.length&&ok&&subEl.textContent==''){emp+=dt;if(emp>.9){emp=0;bonus();cool=12}}else emp=0;
 if(!ok){lx=P.x;lz=P.z;ly=yaw;return}
 const moved=Math.hypot(P.x-lx,P.z-lz)>.005||Math.abs(yaw-ly)>.002;
 sp+=Math.abs(yaw-ly);spT+=dt;if(spT>10){spT=0;sp=0}
 lx=P.x;lz=P.z;ly=yaw;idle=moved?0:idle+dt;
-const free=cool<=0&&$('sub').textContent=='';
+const free=cool<=0&&subEl.textContent==''&&!Q.length;
 if(P.h>.35&&!pj){pj=1;jc++;jt=0}else if(P.h<.1)pj=0;jt+=dt;if(jt>25)jc=0;
 if(S.dr!=pd){pd=S.dr;dc++}
 if(pit>1.1)up+=dt;else if(up>0)up=0;
 if(!free)return;
-if(idle>25){idle=0;sayS('Tommy',pick(IDLE))}
-else if(jc>=8){jc=0;sayS('Tommy',"Wheee! I'm a ghost! Boo! ...okay, I'll stop.")}
-else if(dc>=12){dc=0;sayS('Drone',"Bzzt! Boo! Did I scare you? Bzzt!")}
-else if(sp>12.6){sp=0;spT=0;sayS('Tommy',"I'm getting dizzy... Halloween spins!")}
-else if(up>4){up=-60;sayS('Tommy',"Are those bats? Happy Halloween, bats.")}}
+const sy=(w,s)=>{cool=12;say(s,5200,w)};
+if(idle>25){idle=0;sy('Tommy',pick(IDLE))}
+else if(jc>=8){jc=0;sy('Tommy',"Wheee! I'm a ghost! Boo! ...okay, I'll stop.")}
+else if(dc>=12){dc=0;sy('Drone',"Bzzt! Boo! Did I scare you? Bzzt!")}
+else if(sp>12.6){sp=0;spT=0;sy('Tommy',"I'm getting dizzy... Halloween spins!")}
+else if(up>4){up=-60;sy('Tommy',"Are those bats? Happy Halloween, bats.")}}
 requestAnimationFrame(loop);
 /* ---- Halloween trailer ---- */
 const cv=document.createElement('canvas');cv.style.cssText='position:fixed;inset:0;z-index:30;display:none;background:#000;touch-action:none';document.body.appendChild(cv);
@@ -1379,7 +1422,8 @@ else if(t<31){q.fillStyle=Math.floor(t*14)%2?'#d00000':'#400';q.fillRect(0,0,w,h
 else if(t<35){const a=['CHAPTER 1','CHAPTER 2','CHAPTER 3','CHAPTER 4','CHAPTER 6','CHAPTER 7'];a.forEach((s,i)=>{if(t>31+i*.5){q.globalAlpha=Math.min(1,(t-31-i*.5)*4);tx(s,w/2,h*.22+i*8.5*u,6*u,i%2?'#ff8a1f':'#e8d8ff')}});q.globalAlpha=1;if(t>33.8)tx('ALL UNLOCKED',w/2,h*.9,8*u,'#2fff6a')}
 else{const g=q.createRadialGradient(w/2,h*.45,u*5,w/2,h*.45,u*80);g.addColorStop(0,'#7a3a00');g.addColorStop(1,'#08030f');q.fillStyle=g;q.fillRect(0,0,w,h);pump(w/2,h*.4,22*u);
 const k=Math.min(1,(t-35)/1.2);q.globalAlpha=k;tx('GARDEN OF',w/2,h*.2,8*u,'#ffd21f');tx('BANAN',w/2,h*.4,Math.min(20*u,w/4.2),'#ff3b30','#ff3b30');tx('HALLOWEEN EDITION',w/2,h*.62,7*u,'#ff8a1f');
-chr('banan',w*.2,h*.95,h*.011);chr('leena',w*.8,h*.95,h*.011);q.globalAlpha=1;if(t>40)tx('Pick a chapter... if you dare.',w/2,h*.76,4.6*u,'#e8d8ff');if(t>43)tx('Tap to close',w/2,h*.88,4*u,'#ffd21f')}
+chr('banan',w*.2,h*.95,h*.011);chr('leena',w*.8,h*.95,h*.011);q.globalAlpha=1;if(t>40)tx('Pick a chapter... if you dare.',w/2,h*.76,4.6*u,'#e8d8ff');if(t>43)tx('Tap to close',w/2,h*.88,4*u,'#ffd21f');
+if(t>37){const fx=w*.62+Math.sin(t*1.3)*6*u,fy=((t-37)*h*.05)%h;q.save();q.translate(fx,fy);q.rotate(Math.sin(t*2)*.8);q.fillStyle='#3a8dff';q.beginPath();q.ellipse(0,0,.9*u,2.8*u,0,0,7);q.fill();q.restore()}}
 const fl=FLS.find(f=>t>=f&&t<f+.3);if(fl!==undefined){q.fillStyle='rgba(255,255,255,'+(.8-(t-fl)*2.6)+')';q.fillRect(0,0,w,h)}
 q.setTransform(1,0,0,1,0,0);if(sub&&t<sub[1]){q.fillStyle='rgba(0,0,0,.6)';q.fillRect(0,h-9*u,w,9*u);q.font='700 '+3.6*u+'px system-ui';q.textAlign='center';q.fillStyle='#fff';q.fillText(sub[0],w/2,h-3.5*u,w*.94)}
 if(t>45)endT()}
@@ -1387,7 +1431,12 @@ function endT(){if(!run)return;run=0;cancelAnimationFrame(raf);cv.style.display=
 cv.addEventListener('pointerdown',e=>{e.preventDefault();if(performance.now()-t0>2500)endT()});
 function trailer(){sz();said={};sub=null;cv.style.display='block';run=1;t0=performance.now();raf=requestAnimationFrame(frame)}
 /* ---- menu ---- */
-const m=document.getElementById('cm');
-if(m){const sb=m.querySelector('.sb');if(sb)sb.textContent='🎃 HALLOWEEN EDITION · Pick a chapter. Every chapter is unlocked! 🦇';const b=document.createElement('div');b.id='trb';b.textContent='🎬 Halloween Trailer';b.onclick=trailer;m.appendChild(b)}
-})();  
+if(menuEl){const sb=menuEl.querySelector('.sb');if(sb)sb.textContent='🎃 HALLOWEEN EDITION · Pick a chapter. Every chapter is unlocked! 🦇';
+const b=document.createElement('div');b.id='trb';b.textContent='🎬 Halloween Trailer';b.onclick=trailer;menuEl.appendChild(b);
+const fm=document.createElement('div');fm.id='fm';fm.textContent='🪶';menuEl.appendChild(fm);
+if(FD.length>=6)fm.style.display='block';
+fm.onclick=()=>{const l="...Is that you, little ones? ...Stay out of the dark. I'm still looking for you.";voice(l,'Daddy Bird');toast('🪶 '+l)};
+if(window.__gobFeather)clearInterval(window.__gobFeather);
+window.__gobFeather=setInterval(()=>{if(FD.length>=6)fm.style.display='block'},1500)}
+})();
 </script></body></html>
